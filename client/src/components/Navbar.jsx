@@ -55,7 +55,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-6">
             <Link to="/">Home</Link>
             <Link to="/profile">Profile</Link>
-            <Link to="/order/status">Hire</Link>
+{/*             <Link to="/order/status">Hire</Link> */}
 
             {/* {user?.admin && ( */}
               <Menubar>
