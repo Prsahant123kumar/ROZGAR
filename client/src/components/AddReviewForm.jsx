@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 const AddReviewForm = ({ WorkersId, userId ,fullname}) => {
-    const API_END_POINT = "https://rozgar-backend.onrender.com/api/v1/Workers";
+    const API_END_POINT = "https://rozgar-server.onrender.com/api/v1/Workers";
     axios.defaults.withCredentials = true;
   const [input, setInput] = useState({
     rating: 5, // Default rating
