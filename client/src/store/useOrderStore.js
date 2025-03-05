@@ -2,7 +2,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const API_END_POINT = "https://rozgar-backend.onrender.com/api/v1/order";
+const API_END_POINT = "https://rozgar-server.onrender.com/api/v1/order";
 axios.defaults.withCredentials = true;
 
 export const useOrderStore = create(persist((set) => ({
