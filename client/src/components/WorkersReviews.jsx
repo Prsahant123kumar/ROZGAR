@@ -4,7 +4,7 @@ import axios from "axios";
 import { Separator } from "./ui/separator";
 const WorkersReviews = ({ WorkersId }) => {
   const [reviews, setReviews] = useState([]);
-  const API_END_POINT = "https://rozgar-backend.onrender.com/api/v1/Workers";
+  const API_END_POINT = "https://rozgar-server.onrender.com/api/v1/Workers";
   axios.defaults.withCredentials = true;
   useEffect(() => {
     const fetchReviews = async () => {
