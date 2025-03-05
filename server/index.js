@@ -38,7 +38,7 @@ app.use(cookieParser());
 
 
 const corsOptions = {
-    origin: ["https://food-app-yt.onrender.com", "http://localhost:5173"],
+    origin: ["https://rozgar-frontend.onrender.com", "http://localhost:5173"],
     credentials: true,
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
