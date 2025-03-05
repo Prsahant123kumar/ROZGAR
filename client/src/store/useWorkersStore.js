@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-const API_END_POINT = "https://rozgar-backend.onrender.com/api/v1/Workers";
+const API_END_POINT = "https://rozgar-server.onrender.com/api/v1/Workers";
 axios.defaults.withCredentials = true;
 
 export const useWorkersStore = create(
