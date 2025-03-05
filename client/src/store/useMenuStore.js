@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useWorkersStore } from "./useWorkersStore";
 
-const API_END_POINT = "https://rozgar-backend.onrender.com/api/v1/menu";
+const API_END_POINT = "https://rozgar-server.onrender.com/api/v1/menu";
 axios.defaults.withCredentials = true;
 
 export const useMenuStore = create(persist((set) => ({
