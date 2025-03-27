@@ -7,7 +7,6 @@ const cors = require("cors");
 const path=require("path")
 const userRoute = require("./routes/user.route");
 const WorkersRoute = require("./routes/Workers.route");
-const menuRoute = require("./routes/menu.route");
 dotenv.config();
 const app = express();
 const http=require("http");
@@ -38,17 +37,20 @@ app.use(cookieParser());
 
 
 const corsOptions = {
-    origin: ["https://food-app-yt.onrender.com", "http://localhost:5173"],
+    origin: [
+      "https://rozgar-server.onrender.com",
+      "http://localhost:5173", 
+      // "http://localhost:3000" // Add this line
+    ],
     credentials: true,
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization',
-};
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+  };
 app.use(cors(corsOptions));
 
 // API Routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/Workers", WorkersRoute);
-app.use("/api/v1/menu", menuRoute);
 
 // Connect to MongoDB BEFORE starting the server
 app.get("/",function(req,res) {

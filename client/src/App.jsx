@@ -10,14 +10,15 @@ import MainLayout from "./layout/MainLayout";
 import Profile from "./components/Profile";
 import SearchPage from "./components/SearchPage";
 import WorkersDetail from "./components/WorkersDetail";
-import Cart from "./components/Cart";
 import Workers from "./admin/Workers";
-import AddWorkers from "./admin/AddWorkers";
 // import Success from "./components/Success";
 import { useUserStore } from "./store/useUserStore";
 import { useEffect } from "react";
 import Loading from "./components/Loading";
 import { useThemeStore } from "./store/useThemeStore";
+import CheckWorker from "./admin/CheckWorker"; // ✅ Correct way
+import DeleteWorkerOTP from "./admin/DeleteWorkerOTP"
+import UpdateLocalWorkers from "./admin/UpdateLocalWorkers";
 
 const ProtectedRoutes = ({ children }) => {
   const { isAuthenticated, user } = useUserStore();
@@ -50,10 +51,11 @@ const appRouter = createBrowserRouter([
       { path: "/profile", element: <Profile /> },
       { path: "/search/:text", element: <SearchPage /> },
       { path: "/Workers/:id", element: <WorkersDetail /> },
-      { path: "/cart", element: <Cart /> },
       // { path: "/order/status", element: <Success /> },
       { path: "/admin/Workers", element: <AdminRoute><Workers /></AdminRoute> },
-      { path: "/admin/menu", element: <AdminRoute><AddWorkers /></AdminRoute> },
+      { path: "/admin/UpdateLocalWorkers", element: <AdminRoute><UpdateLocalWorkers /></AdminRoute> },
+      { path: "admin/verification-for-update-details", element: <AdminRoute><CheckWorker /></AdminRoute> },
+      { path: "admin/verification-for-Delete-Worker", element: <AdminRoute><DeleteWorkerOTP /></AdminRoute> }
     ],
   },
   { path: "/login", element: <AuthenticatedUser><Login /></AuthenticatedUser> },

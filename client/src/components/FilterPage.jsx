@@ -10,28 +10,22 @@ const filterOptions = [
   { id: "Labour", label: "Labour" },
   { id: "Trowel", label: "Trowel" },
 ];
-
 const FilterPage = () => {
   const { setAppliedFilter, appliedFilter, resetAppliedFilter } = useWorkersStore();
-
-  const appliedFilterHandler = (value) => {
-    setAppliedFilter(value);
-  };
-
   return (
-    <div className="md:w-72">
-      <div className="flex items-center justify-between">
-        <h1 className="font-medium text-lg">Filter by Occupation</h1>
-        <Button variant={"link"} onClick={resetAppliedFilter}>Reset</Button>
+    <div className="md:w-72 bg-gray-50 dark:bg-gray-900 p-5 rounded-lg shadow-md">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="font-semibold text-lg text-gray-900 dark:text-white">Filter by Occupation</h1>
+        <Button variant="link" className="text-red-500" onClick={resetAppliedFilter}>Reset</Button>
       </div>
       {filterOptions.map((option) => (
-        <div key={option.id} className="flex items-center space-x-2 my-5">
+        <div key={option.id} className="flex items-center space-x-3 my-3">
           <Checkbox
             id={option.id}
             checked={appliedFilter.includes(option.label)}
-            onClick={() => appliedFilterHandler(option.label)}
+            onClick={() => setAppliedFilter(option.label)}
           />
-          <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {option.label}
           </Label>
         </div>

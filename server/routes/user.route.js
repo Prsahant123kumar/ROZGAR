@@ -13,15 +13,4 @@ router.route("/verify-email").post(verifyEmail);
 router.route("/forgot-password").post(forgotPassword);
 router.route("/reset-password").post(resetPassword);
 router.route("/profile/update").put(isAuthenticated, updateProfile);
-
-// router.get("/google", passport.authenticate("google", ["profile", "email"]));
-
-// router.get(
-// 	"/google/callback",
-// 	passport.authenticate("google", {
-// 		successRedirect: process.env.CLIENT_URL,
-// 		failureRedirect: "/login/failed",
-// 	})
-// );
-
 module.exports = router;

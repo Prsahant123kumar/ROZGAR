@@ -20,15 +20,15 @@ const userSchema = new mongoose.Schema(
         },
         address: {
             type: String,
-            default: "Update your address"
+            default: ""
         },
         city: {
             type: String,
-            default: "Update your city"
+            default: ""
         },
         country: {
             type: String,
-            default: "Update your country"
+            default: ""
         },
         profilePicture: {
             type: String,

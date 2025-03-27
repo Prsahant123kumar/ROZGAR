@@ -1,0 +1,1942 @@
+import { profile } from "console"
+
+Workers.js
+
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { useWorkersStore } from "@/store/useWorkersStore";
+// import { Loader2 } from "lucide-react";
+// import { useEffect, useState } from "react";
+
+// const Workers = () => {
+//   const [input, setInput] = useState({
+//     WorkersName: "",
+//     city: "",
+//     country: "",
+//     contactNo: "",
+//     cuisines: [],
+//     imageFile: undefined,
+//   });
+//   const [errors, setErrors] = useState({});
+//   const {
+//     loading,
+//     Workers,
+//     updateWorkers,
+//     createWorkers,
+//     getWorkers,
+//   } = useWorkersStore();
+
+//   const changeEventHandler = (e) => {
+//     const { name, value, type } = e.target;
+//     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
+//   };
+
+//   const submitHandler = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       const formData = new FormData();
+//       formData.append("WorkersName", input.WorkersName);
+//       formData.append("city", input.city);
+//       formData.append("country", input.country);
+//       formData.append("contactNo", input.contactNo);
+//       formData.append("cuisines", JSON.stringify(input.cuisines));
+
+//       if (input.imageFile) {
+//         formData.append("imageFile", input.imageFile);
+//       }
+
+//       if (Workers) {
+//         await updateWorkers(formData);
+//       } else {
+//         await createWorkers(formData);
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     const fetchWorkers = async () => {
+//       await getWorkers();
+//       if (Workers) {
+//         setInput({
+//           WorkersName: Workers.WorkersName || "",
+//           city: Workers.city || "",
+//           country: Workers.country || "",
+//           contactNo: Workers.contactNo || 0,
+//           cuisines: Array.isArray(Workers.cuisines) ? Workers.cuisines : [],
+//           imageFile: undefined,
+//         });
+//       }
+//     };
+//     fetchWorkers();
+//   }, []);
+
+//   return (
+//     <div className="max-w-6xl mx-auto my-10">
+//       <div>
+//         <h1 className="font-extrabold text-2xl mb-5">Add Workers</h1>
+//         <form onSubmit={submitHandler}>
+//           <div className="md:grid grid-cols-2 gap-6 space-y-2 md:space-y-0">
+//             <div>
+//               <Label>Worker Name</Label>
+//               <Input
+//                 type="text"
+//                 name="WorkersName"
+//                 value={input.WorkersName}
+//                 onChange={changeEventHandler}
+//                 placeholder="Enter your Worker name"
+//               />
+//             </div>
+//             <div>
+//               <Label>City</Label>
+//               <Input
+//                 type="text"
+//                 name="city"
+//                 value={input.city}
+//                 onChange={changeEventHandler}
+//                 placeholder="Enter your city name"
+//               />
+//             </div>
+//             <div>
+//               <Label>Country</Label>
+//               <Input
+//                 type="text"
+//                 name="country"
+//                 value={input.country}
+//                 onChange={changeEventHandler}
+//                 placeholder="Enter your country name"
+//               />
+//             </div>
+//             <div>
+//               <Label>Contact No.</Label>
+//               <Input
+//                 type="text"
+//                 name="contactNo"
+//                 value={input.contactNo}
+//                 onChange={changeEventHandler}
+//                 placeholder="Enter your Contact No."
+//               />
+//             </div>
+//             <div>
+//               <Label>Occupation</Label>
+//               <Input
+//                 type="text"
+//                 name="cuisines"
+//                 value={input.cuisines.join(", ")}
+//                 onChange={(e) => setInput({ ...input, cuisines: e.target.value.split(",") })}
+//                 placeholder="e.g. Carpenter, Labour"
+//               />
+//             </div>
+//             <div>
+//               <Label>Upload Worker Photo</Label>
+//               <Input
+//                 onChange={(e) => setInput({
+//                   ...input,
+//                   imageFile: e.target.files?.[0] || undefined,
+//                 })}
+//                 type="file"
+//                 accept="image/*"
+//                 name="imageFile"
+//               />
+//             </div>
+//           </div>
+//           <div className="my-5 w-fit">
+//             {loading ? (
+//               <Button disabled className="bg-orange hover:bg-hoverOrange">
+//                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+//                 Please wait
+//               </Button>
+//             ) : (
+//               <Button className="bg-orange hover:bg-hoverOrange">
+//                 {Workers ? "Update Your Worker" : "Add Your Worker"}
+//               </Button>
+//             )}
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Workers;
+
+
+
+// const submitHandler = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("WorkersName", input.WorkersName);
+  //     formData.append("city", input.city);
+  //     formData.append("country", input.country);
+  //     formData.append("contactNo", input.contactNo);
+  //     formData.append("cuisines", JSON.stringify(input.cuisines));
+
+  //     if (input.imageFile) {
+  //       formData.append("imageFile", input.imageFile);
+  //     }
+
+  //     if (Workers) {
+  //       await updateWorkers(formData);
+  //       navigate("/admin/verification-for-update-details", { state: { workerId: singleWorkers._id } });
+  //     } else {
+  //       await createWorkers(formData);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+
+  
+        // ✅ Navigate after successful update
+
+        // console.log(response?.success)
+        // if (response?.success) {
+        // } else {
+        //     console.error("Worker update failed!");
+        // }
+
+
+
+        //   const fetchWorkers = async () => {
+    //     const result = await getWorkers();
+    //     setLoadingData(false); // NEW: Mark data as loaded
+    //     localStorage.setItem("workerId", state.singleWorkers._id);
+    //     const workerId = localStorage.getItem("workerId");
+    //     console.log("Retrieved workerId:", workerId);
+
+    //     console.log(id)
+    //     if (Workers) {
+    //       setInput({
+    //         WorkersName: Workers.WorkersName || "",
+    //         city: Workers.city || "",
+    //         country: Workers.country || "",
+    //         contactNo: Workers.contactNo || "",
+    //         cuisines: Array.isArray(Workers.cuisines) ? Workers.cuisines : [],
+    //         imageFile: undefined,
+    //       });
+    //     }
+    //   };
+    //   fetchWorkers();
+
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { useWorkersStore } from "@/store/useWorkersStore";
+// import { Loader2 } from "lucide-react";
+// import { useEffect, useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+
+// const Workers = () => {
+//   const navigate = useNavigate();
+//   const [input, setInput] = useState({
+//     WorkersName: "",
+//     city: "",
+//     country: "",
+//     contactNo: "",
+//     cuisines: [],
+//     imageFile: undefined,
+//   });
+//   const [loadingData, setLoadingData] = useState(true); // NEW: Track data loading state
+//   const [errors, setErrors] = useState({});
+
+//   const { loading, Workers, updateWorkers, createWorkers, getWorkers } = useWorkersStore();
+
+//   const changeEventHandler = (e) => {
+//     const { name, value, type } = e.target;
+//     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
+//   };
+
+  
+
+
+//   const submitHandler = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//         const formData = new FormData();
+//         formData.append("WorkersName", input.WorkersName);
+//         formData.append("city", input.city);
+//         formData.append("country", input.country);
+//         formData.append("contactNo", input.contactNo);
+//         formData.append("cuisines", JSON.stringify(input.cuisines));
+
+//         if (input.imageFile) {
+//             formData.append("imageFile", input.imageFile);
+//         }
+
+//         // ✅ Retrieve `workerId` from localStorage
+//         const workerId = localStorage.getItem("workerId");
+//         if (!workerId) {
+//             console.error("Worker ID not found in localStorage!");
+//             return;
+//         }
+
+//         formData.append("workerId", workerId);
+
+//         let response;
+//         if (Workers) {
+//             response = await updateWorkers(formData);
+//             navigate("/admin/verification-for-update-details", { state: { workerId } });
+//         } else {
+//             response = await createWorkers(formData);
+//         }
+
+//     } catch (error) {
+//         console.log("Submit Handler Error:", error);
+//     }
+// };
+
+
+//   useEffect(() => {
+    
+
+
+//     const fetchWorkers = async () => {
+//       const result = await getWorkers();
+//       setLoadingData(false); // ✅ Mark data as loaded
+//       // console.log(result)
+
+//       if (Workers) {
+//         setInput({
+//           WorkersName: Workers.WorkersName || "",
+//           city: Workers.city || "",
+//           country: Workers.country || "",
+//           contactNo: Workers.contactNo || "",
+//           cuisines: Array.isArray(Workers.cuisines) ? Workers.cuisines : [],
+//           imageFile: undefined,
+//         });
+
+//         // ✅ Store workerId correctly
+//         if (Workers._id) {
+//           localStorage.setItem("workerId", Workers._id);
+//           console.log("Worker ID saved to localStorage:", Workers._id);
+//         } else {
+//           console.error("Worker ID not found!");
+//         }
+//       }
+//     };
+
+//     fetchWorkers();
+
+//   }, []);
+
+
+
+
+
+
+//   return (
+//     <div className="max-w-6xl mx-auto my-10">
+//       <div>
+//         <h1 className="font-extrabold text-2xl mb-5">
+//           {loadingData ? "Loading Worker Details..." : Workers ? "Update Worker" : "Add Worker"}
+//         </h1>
+
+//         {/* NEW: Show loader while fetching worker data */}
+//         {loadingData ? (
+//           <div className="flex items-center space-x-2">
+//             <Loader2 className="animate-spin h-6 w-6 text-orange-600" />
+//             <span>Fetching worker details...</span>
+//           </div>
+//         ) : (
+//           <form onSubmit={submitHandler}>
+//             <div className="md:grid grid-cols-2 gap-6 space-y-2 md:space-y-0">
+//               <div>
+//                 <Label>Worker Name</Label>
+//                 <Input
+//                   type="text"
+//                   name="WorkersName"
+//                   value={input.WorkersName}
+//                   onChange={changeEventHandler}
+//                   placeholder="Enter your Worker name"
+//                 />
+//               </div>
+//               <div>
+//                 <Label>City</Label>
+//                 <Input
+//                   type="text"
+//                   name="city"
+//                   value={input.city}
+//                   onChange={changeEventHandler}
+//                   placeholder="Enter your city name"
+//                 />
+//               </div>
+//               <div>
+//                 <Label>Country</Label>
+//                 <Input
+//                   type="text"
+//                   name="country"
+//                   value={input.country}
+//                   onChange={changeEventHandler}
+//                   placeholder="Enter your country name"
+//                 />
+//               </div>
+//               <div>
+//                 <Label>Contact No.</Label>
+//                 <Input
+//                   type="text"
+//                   name="contactNo"
+//                   value={input.contactNo}
+//                   onChange={changeEventHandler}
+//                   placeholder="Enter your Contact No."
+//                 />
+//               </div>
+//               <div>
+//                 <Label>Occupation</Label>
+//                 <Input
+//                   type="text"
+//                   name="cuisines"
+//                   value={input.cuisines.join(", ")}
+//                   onChange={(e) => setInput({ ...input, cuisines: e.target.value.split(",") })}
+//                   placeholder="e.g. Carpenter, Labour"
+//                 />
+//               </div>
+//               <div>
+//                 <Label>Upload Worker Photo</Label>
+//                 <Input
+//                   onChange={(e) =>
+//                     setInput({
+//                       ...input,
+//                       imageFile: e.target.files?.[0] || undefined,
+//                     })
+//                   }
+//                   type="file"
+//                   accept="image/*"
+//                   name="imageFile"
+//                 />
+//               </div>
+//             </div>
+//             <div className="my-5 w-fit">
+//               {loading ? (
+//                 <Button disabled className="bg-orange hover:bg-hoverOrange">
+//                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+//                   Please wait
+//                 </Button>
+//               ) : (
+//                 <Button className="bg-orange hover:bg-hoverOrange">
+//                   {Workers ? "Update Your Worker" : "Add Your Worker"}
+//                 </Button>
+//               )}
+//             </div>
+//           </form>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Workers;
+
+
+
+
+AddReviewForm
+
+
+
+// import React, { useState } from "react";
+// import axios from "axios";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Textarea } from "@/components/ui/textarea";
+// import WorkersReviews from "./WorkersReviews";
+// const AddReviewForm = ({ WorkersId, userId ,fullname}) => {
+//     const API_END_POINT = "http://localhost:3000/api/v1/Workers";
+//     axios.defaults.withCredentials = true;
+//   const [input, setInput] = useState({
+//     rating: 5, // Default rating
+//     comment: "", // Comment field
+//   });
+
+//   // Handle input change
+//   const changeEventHandler = (e) => {
+//     const { name, value } = e.target;
+//     setInput({ ...input, [name]: value });
+//   };
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       const res = await axios.post(
+//         `${API_END_POINT}/reviews/${WorkersId}`,
+//         { userId,fullname, rating: input.rating, comment: input.comment },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         }
+//       );
+
+//       alert("Review submitted successfully!");
+//       fetchReviews();
+//       setInput({ rating: 5, comment: "" }); // Reset form
+//     } catch (error) {
+//       alert("Failed to submit review");
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit} className="space-y-6">
+//   <h3 className="text-2xl font-bold tracking-tight">Leave a Review</h3>
+  
+//   <div className="space-y-2">
+//     <Label htmlFor="rating">Rating</Label>
+//     <Select 
+//       name="rating"
+//       value={input.rating.toString()}
+//       onValueChange={(value) => changeEventHandler({ target: { name: "rating", value } })}
+//     >
+//       <SelectTrigger className="w-[180px]">
+//         <SelectValue placeholder="Select a rating" />
+//       </SelectTrigger>
+//       <SelectContent>
+//         <SelectItem value="1">1 Star</SelectItem>
+//         <SelectItem value="2">2 Stars</SelectItem>
+//         <SelectItem value="3">3 Stars</SelectItem>
+//         <SelectItem value="4">4 Stars</SelectItem>
+//         <SelectItem value="5">5 Stars</SelectItem>
+//       </SelectContent>
+//     </Select>
+//   </div>
+
+//   <div className="space-y-2">
+//     <Label htmlFor="comment">Your Review</Label>
+//     <Textarea
+//       name="comment"
+//       value={input.comment}
+//       onChange={changeEventHandler}
+//       placeholder="Share your experience..."
+//       className="min-h-[120px]"
+//     />
+//     <p className="text-sm text-muted-foreground">
+//       Your review will help others make better decisions.
+//     </p>
+//   </div>
+
+//   <Button type="submit" className="w-full sm:w-auto">
+//     Submit Review
+//   </Button>
+// </form>
+//   );
+// };
+
+// export default AddReviewForm;
+
+
+
+
+// import React, { useState } from "react";
+// import axios from "axios";
+// import { Button } from "@/components/ui/button";
+// import { Label } from "@/components/ui/label";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Textarea } from "@/components/ui/textarea";
+
+// const AddReviewForm = ({ WorkersId, userId, fullname }) => {
+//   const API_END_POINT = "http://localhost:3000/api/v1/Workers";
+//   axios.defaults.withCredentials = true;
+
+//   const [input, setInput] = useState({
+//     rating: 5,
+//     comment: "",
+//   });
+
+//   const changeEventHandler = (e) => {
+//     const { name, value } = e.target;
+//     setInput({ ...input, [name]: value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       await axios.post(
+//         `${API_END_POINT}/reviews/${WorkersId}`,
+//         { userId, fullname, rating: input.rating, comment: input.comment },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         }
+//       );
+//       alert("Review submitted successfully!");
+//       setInput({ rating: 5, comment: "" });
+//     } catch (error) {
+//       alert("Failed to submit review");
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+//       <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Leave a Review</h3>
+//       <div className="space-y-4">
+//         <div className="space-y-2">
+//           <Label htmlFor="rating" className="text-gray-700 dark:text-gray-300">Rating</Label>
+//           <Select
+//             name="rating"
+//             value={input.rating.toString()}
+//             onValueChange={(value) => changeEventHandler({ target: { name: "rating", value } })}
+//           >
+//             <SelectTrigger className="w-[180px]">
+//               <SelectValue placeholder="Select a rating" />
+//             </SelectTrigger>
+//             <SelectContent>
+//               <SelectItem value="1">1 Star</SelectItem>
+//               <SelectItem value="2">2 Stars</SelectItem>
+//               <SelectItem value="3">3 Stars</SelectItem>
+//               <SelectItem value="4">4 Stars</SelectItem>
+//               <SelectItem value="5">5 Stars</SelectItem>
+//             </SelectContent>
+//           </Select>
+//         </div>
+//         <div className="space-y-2">
+//           <Label htmlFor="comment" className="text-gray-700 dark:text-gray-300">Your Review</Label>
+//           <Textarea
+//             name="comment"
+//             value={input.comment}
+//             onChange={changeEventHandler}
+//             placeholder="Share your experience..."
+//             className="min-h-[120px]"
+//           />
+//         </div>
+//         <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-black">
+//           Submit Review
+//         </Button>
+//       </div>
+//     </form>
+//   );
+// };
+
+// export default AddReviewForm;
+
+
+
+FilterPage
+
+
+// const FilterPage = () => {
+//   const { setAppliedFilter, appliedFilter, resetAppliedFilter } = useWorkersStore();
+
+//   const appliedFilterHandler = (value) => {
+//     setAppliedFilter(value);
+//   };
+
+//   return (
+//     <div className="md:w-72">
+//       <div className="flex items-center justify-between">
+//         <h1 className="font-medium text-lg">Filter by Occupation</h1>
+//         <Button variant={"link"} onClick={resetAppliedFilter}>Reset</Button>
+//       </div>
+//       {filterOptions.map((option) => (
+//         <div key={option.id} className="flex items-center space-x-2 my-5">
+//           <Checkbox
+//             id={option.id}
+//             checked={appliedFilter.includes(option.label)}
+//             onClick={() => appliedFilterHandler(option.label)}
+//           />
+//           <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+//             {option.label}
+//           </Label>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+
+
+HereSection
+
+
+// import { useState } from "react";
+// import { Input } from "./ui/input";
+// import { Search } from "lucide-react";
+// import { Button } from "./ui/button";
+// import { useNavigate } from "react-router-dom";
+
+// const HereSection = () => {
+//   const [searchText, setSearchText] = useState("");
+//   const navigate = useNavigate();
+
+//   return (
+//     <div className="flex flex-col md:flex-row max-w-7xl mx-auto md:p-10 rounded-lg items-center justify-center m-4 gap-20">
+//       <div className="flex flex-col gap-10 md:w-[40%]">
+//         <div className="flex flex-col gap-5">
+//           <h1 className="font-bold md:font-extrabold md:text-5xl text-4xl">
+//             Hire Workers anytime & anywhere
+//           </h1>
+//           <p className="text-gray-500">
+//             Hey! Hire Best Workers 
+//           </p>
+//         </div>
+//         <div className="relative flex items-center gap-2">
+//           <Input
+//             type="text"
+//             value={searchText}
+//             placeholder="Search Wokers by name, city & country"
+//             onChange={(e) => setSearchText(e.target.value)}
+//             className="pl-10 shadow-lg"
+//           />
+//           <Search className="text-gray-500 absolute inset-y-2 left-2" />
+//           <Button
+//             onClick={() => navigate(`/search/${searchText}`)}
+//             className="bg-orange hover:bg-hoverOrange"
+//           >
+//             Search
+//           </Button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+// import { useState } from "react";
+// import { Input } from "./ui/input";
+// import { Search } from "lucide-react";
+// import { Button } from "./ui/button";
+// import { useNavigate } from "react-router-dom";
+
+// const HereSection = () => {
+//   const [searchText, setSearchText] = useState("");
+//   const navigate = useNavigate();
+
+//   return (
+//     <section className="text-center py-20 bg-gradient-to-r from-orange-500 to-red-500 text-gray-900 dark:text-white">
+//       <div className="max-w-5xl mx-auto px-6">
+//         <h1 className="text-5xl font-extrabold text-black dark:text-white">Hire Workers Anytime & Anywhere</h1>
+//         <p className="mt-4 text-lg text-gray-800 dark:text-gray-300">Hey! Hire Best Workers</p>
+//         <div className="mt-8 flex justify-center items-center gap-4">
+//           <input
+//             type="text"
+//             className="p-3 rounded-lg shadow-lg w-80 text-gray-900 dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
+//             placeholder="Search Workers by name, city, or country"
+//             value={searchText}
+//             onChange={(e) => setSearchText(e.target.value)}
+//           />
+//           <Button onClick={() => navigate(`/search/${searchText}`)} className="bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black">
+//             Search
+//           </Button>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default HereSection;
+
+
+
+
+Navbar
+
+
+// import { Link } from "react-router-dom";
+//  // Adjust path if needed
+// import {
+//   Menubar,
+//   MenubarContent,
+//   MenubarItem,
+//   MenubarMenu,
+//   MenubarTrigger,
+// } from "./ui/menubar";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "./ui/dropdown-menu";
+// import { Button } from "./ui/button";
+// import {
+//   HandPlatter,
+//   Loader2,
+//   Menu,
+//   Moon,
+//   PackageCheck,
+//   ShoppingCart,
+//   SquareMenu,
+//   Sun,
+//   User,
+//   UtensilsCrossed,
+// } from "lucide-react";
+// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+// import {
+//   Sheet,
+//   SheetFooter,
+//   SheetClose,
+//   SheetContent,
+//   SheetDescription,
+//   SheetHeader,
+//   SheetTitle,
+//   SheetTrigger,
+// } from "./ui/sheet";
+// import { Separator } from "./ui/separator";
+// import { useUserStore } from "@/store/useUserStore";
+// import { useThemeStore } from "@/store/useThemeStore"; // Assuming this is the correct import
+
+// const Navbar = () => {
+//   const { user, loading, logout } = useUserStore();
+//   const { setTheme } = useThemeStore();
+
+//   return (
+//     <div className="max-w-7xl mx-auto">
+//       <div className="flex items-center justify-between h-14">
+//         <Link to="/">
+//           <h1 className="font-bold md:font-extrabold text-2xl">ROZGAR</h1>
+//         </Link>
+//         <div className="hidden md:flex items-center gap-10">
+//           <div className="hidden md:flex items-center gap-6">
+//             <Link to="/">Home</Link>
+//             <Link to="/profile">Profile</Link>
+//             {/* <Link to="/order/status">Hire</Link> */}
+
+//             {/* {user?.admin && ( */}
+//               <Menubar>
+//                 <MenubarMenu>
+//                   <MenubarTrigger>Dashboard</MenubarTrigger>
+//                   <MenubarContent>
+//                     <Link to="/admin/Workers">
+//                       <MenubarItem>Add Worker</MenubarItem>
+//                     </Link>
+//                     {/* <Link to="/admin/menu">
+//                       <MenubarItem>Menu</MenubarItem>
+//                     </Link>
+//                     <Link to="/admin/orders">
+//                       <MenubarItem>Orders</MenubarItem>
+//                     </Link> */}
+//                   </MenubarContent>
+//                 </MenubarMenu>
+//               </Menubar>
+//             {/* )} */}
+//           </div>
+//           <div className="flex items-center gap-4">
+//             <div>
+//               <DropdownMenu>
+//                 <DropdownMenuTrigger asChild>
+//                   <Button variant="outline" size="icon">
+//                     <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+//                     <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+//                     <span className="sr-only">Toggle theme</span>
+//                   </Button>
+//                 </DropdownMenuTrigger>
+//                 <DropdownMenuContent align="end">
+//                   <DropdownMenuItem onClick={() => setTheme("light")}>
+//                     Light
+//                   </DropdownMenuItem>
+//                   <DropdownMenuItem onClick={() => setTheme("dark")}>
+//                     Dark
+//                   </DropdownMenuItem>
+//                 </DropdownMenuContent>
+//               </DropdownMenu>
+//             </div>
+//             <div>
+//               <Avatar>
+//                 <AvatarImage src={user?.profilePicture} alt="profilephoto" />
+//                 <AvatarFallback>CN</AvatarFallback>
+//               </Avatar>
+//             </div>
+//             <div>
+//               {loading ? (
+//                 <Button className="bg-orange hover:bg-hoverOrange">
+//                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+//                   Please wait
+//                 </Button>
+//               ) : (
+//                 <Button
+//                   onClick={logout}
+//                   className="bg-orange hover:bg-hoverOrange"
+//                 >
+//                   Logout
+//                 </Button>
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//         <div className="md:hidden lg:hidden">
+//           {/* Mobile responsive */}
+//           <MobileNavbar />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const MobileNavbar = () => {
+//   const { user, logout, loading } = useUserStore();
+//   const { setTheme } = useThemeStore();
+//   return (
+//     <Sheet>
+//       <SheetTrigger asChild>
+//         <Button
+//           size={"icon"}
+//           className="rounded-full bg-gray-200 text-black hover:bg-gray-200"
+//           variant="outline"
+//         >
+//           <Menu size={"18"} />
+//         </Button>
+//       </SheetTrigger>
+//       <SheetContent className="flex flex-col">
+//         <SheetHeader className="flex flex-row items-center justify-between mt-2">
+//           <SheetTitle>ROZGAR</SheetTitle>
+//           <DropdownMenu>
+//             <DropdownMenuTrigger asChild>
+//               <Button variant="outline" size="icon">
+//                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+//                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+//                 <span className="sr-only">Toggle theme</span>
+//               </Button>
+//             </DropdownMenuTrigger>
+//             <DropdownMenuContent align="end">
+//               <DropdownMenuItem onClick={() => setTheme("light")}>
+//                 Light
+//               </DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => setTheme("dark")}>
+//                 Dark
+//               </DropdownMenuItem>
+//             </DropdownMenuContent>
+//           </DropdownMenu>
+//         </SheetHeader>
+//         <Separator className="my-2" />
+//         <SheetDescription className="flex-1">
+//           <Link
+//             to="/profile"
+//             className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+//           >
+//             <User />
+//             <span>Profile</span>
+//           </Link>
+//           <Link
+//             to="/order/status"
+//             className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+//           >
+//             <HandPlatter />
+//             <span>HIRE</span>
+//           </Link>
+//           <Link
+//             to="/cart"
+//             className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+//           >
+//             <ShoppingCart />
+//             <span>Cart (0)</span>
+//           </Link>
+//           {/* {user?.admin && ( */}
+//             <>
+//               <Link
+//                 to="/admin/AddWorkers"
+//                 className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+//               >
+//                 <SquareMenu />
+//                 <span>Details</span>
+//               </Link>
+//               <Link
+//                 to="/admin/Workers"
+//                 className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+//               >
+//                 <UtensilsCrossed />
+//                 <span>Workers</span>
+//               </Link>
+//               <Link
+//                 to="/admin/orders"
+//                 className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+//               >
+//                 <PackageCheck />
+//                 <span>Details</span>
+//               </Link>
+//             </>
+//           {/* )} */}
+//         </SheetDescription>
+//         <SheetFooter className="flex flex-col gap-4">
+//           <div className="flex flex-row items-center gap-2">
+//             <Avatar>
+//               <AvatarImage src={user?.profilePicture} />
+//               <AvatarFallback>CN</AvatarFallback>
+//             </Avatar>
+//             <h1 className="font-bold">ROZGAR</h1>
+//           </div>
+//           <SheetClose asChild>
+//             {loading ? (
+//               <Button className="bg-orange hover:bg-hoverOrange">
+//                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+//                 Please wait
+//               </Button>
+//             ) : (
+//               <Button
+//                 onClick={logout}
+//                 className="bg-orange hover:bg-hoverOrange"
+//               >
+//                 Logout
+//               </Button>
+//             )}
+//           </SheetClose>
+//         </SheetFooter>
+//       </SheetContent>
+//     </Sheet>
+//   );
+// };
+
+
+
+// import { Link, useNavigate,NavLink } from "react-router-dom";
+// import { useState } from "react";
+// import {
+//   Menubar,
+//   MenubarContent,
+//   MenubarItem,
+//   MenubarMenu,
+//   MenubarTrigger,
+// } from "./ui/menubar";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "./ui/dropdown-menu";
+// import { Button } from "./ui/button";
+// import {
+//   HandPlatter,
+//   Loader2,
+//   Menu,
+//   Moon,
+//   PackageCheck,
+//   ShoppingCart,
+//   SquareMenu,
+//   Sun,
+//   LogOut,
+//   UserPlus,
+//   Home, User, LayoutDashboard,
+//   UtensilsCrossed,
+// } from "lucide-react";
+// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+// import {
+//   Sheet,
+//   SheetFooter,
+//   SheetClose,
+//   SheetContent,
+//   SheetDescription,
+//   SheetHeader,
+//   SheetTitle,
+//   SheetTrigger,
+// } from "./ui/sheet";
+// import { Separator } from "./ui/separator";
+// import { useUserStore } from "@/store/useUserStore";
+// import { useThemeStore } from "@/store/useThemeStore";
+
+// const activeClass =
+//   "text-orange-600 font-medium"; // Active link styling (brown/orange)
+// const inactiveClass =
+//   "text-gray-700 dark:text-gray-200 hover:text-orange-600";
+
+// // Navbar Component
+// const Navbar = () => {
+//   const { user, loading, logout } = useUserStore();
+//   const { setTheme } = useThemeStore();
+
+//   return (
+//     <nav className="bg-white dark:bg-gray-800 shadow-lg py-4 sticky top-0 z-50 w-full">
+//       <div className="max-w-7xl mx-auto flex items-center justify-between px-6">
+//         <Link to="/">
+//           <h1 className="text-3xl font-extrabold text-orange-600">ROZGAR</h1>
+//         </Link>
+//         <div className="hidden md:flex items-center gap-8">
+//           <NavLink to="/" className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+//             Home
+//           </NavLink>
+//           <NavLink to="/profile" className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+//             Profile
+//           </NavLink>
+//           <Menubar>
+//             <MenubarMenu>
+//               <MenubarTrigger className="text-gray-700 dark:text-gray-200 hover:text-black flex items-center gap-2">
+//                 <LayoutDashboard className="h-5 w-5" /> Dashboard
+//               </MenubarTrigger>
+//               <MenubarContent className="w-48">
+//                 <NavLink to="/admin/Workers" className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+//                   <MenubarItem className="flex items-center gap-2">
+//                     <UserPlus className="h-5 w-5" /> Add Worker
+//                   </MenubarItem>
+//                 </NavLink>
+//               </MenubarContent>
+//             </MenubarMenu>
+//           </Menubar>
+//         </div>
+//         <div className="flex items-center gap-4">
+//           <DropdownMenu>
+//             <DropdownMenuTrigger asChild>
+//               <Button variant="outline" size="icon" className="border-2 border-gray-700 text-gray-700 dark:border-gray-200 dark:text-gray-200 hover:border-black">
+//                 <Sun className="h-5 w-5 dark:hidden" />
+//                 <Moon className="h-5 w-5 hidden dark:block" />
+//               </Button>
+//             </DropdownMenuTrigger>
+//             <DropdownMenuContent align="end">
+//               <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+//               <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+//             </DropdownMenuContent>
+//           </DropdownMenu>
+//           <Avatar className="border-2 border-gray-700 dark:border-gray-200">
+//             <AvatarImage src={user?.profilePicture} alt="Profile" />
+//             <AvatarFallback>👤</AvatarFallback>
+//           </Avatar>
+//           {loading ? (
+//             <div className="flex items-center text-gray-700 dark:text-gray-200">
+//               <Loader2 className="animate-spin h-5 w-5 mr-2" /> Please wait...
+//             </div>
+//           ) : (
+//             <NavLink
+//               to="#"
+//               onClick={logout}
+//               className={({ isActive }) => `flex items-center gap-2 ${isActive ? "text-black font-bold" : "text-gray-700 dark:text-gray-200 hover:text-black"}`}
+//             >
+//               <LogOut className="h-5 w-5" /> Logout
+//             </NavLink>
+//           )}
+//         </div>
+//       </div>
+//       <div className="md:hidden lg:hidden">
+//         <MobileNavbar />
+//       </div>
+//     </nav>
+//   );
+// };
+
+// // Mobile Navbar Component
+// const MobileNavbar = () => {
+//   const { user, logout, loading } = useUserStore();
+//   const { setTheme } = useThemeStore();
+
+//   return (
+//     <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 shadow-lg">
+//       {/* Left: Hamburger menu that opens a sheet */}
+//       <Sheet>
+//         <SheetTrigger asChild>
+//           <Button
+//             size="icon"
+//             className="rounded-full bg-gray-200 text-black hover:bg-gray-200"
+//             variant="outline"
+//           >
+//             <Menu size="18" />
+//           </Button>
+//         </SheetTrigger>
+//         <SheetContent className="p-4">
+//           <SheetHeader className="mb-4">
+//             <SheetTitle>Menu</SheetTitle>
+//           </SheetHeader>
+//           <SheetDescription>
+//             <Link
+//               to="/profile"
+//               className="block py-2 text-gray-700 dark:text-gray-200 hover:text-black"
+//             >
+//               Profile
+//             </Link>
+//             <Link
+//               to="/order/status"
+//               className="block py-2 text-gray-700 dark:text-gray-200 hover:text-black"
+//             >
+//               HIRE
+//             </Link>
+//             <Link
+//               to="/cart"
+//               className="block py-2 text-gray-700 dark:text-gray-200 hover:text-black"
+//             >
+//               Cart (0)
+//             </Link>
+//             <Link
+//               to="/admin/Workers"
+//               className="block py-2 text-gray-700 dark:text-gray-200 hover:text-black"
+//             >
+//               Add Worker
+//             </Link>
+//           </SheetDescription>
+//           <div className="mt-4">
+//             {loading ? (
+//               <Button className="bg-orange-500 hover:bg-orange-600 text-white flex items-center">
+//                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+//               </Button>
+//             ) : (
+//               <SheetClose asChild>
+//                 <Button
+//                   onClick={logout}
+//                   className="bg-orange-500 hover:bg-orange-600 text-white"
+//                 >
+//                   Logout
+//                 </Button>
+//               </SheetClose>
+//             )}
+//           </div>
+//         </SheetContent>
+//       </Sheet>
+
+//       {/* Center: ROZGAR Title */}
+//       <div>
+//         <Link to="/">
+//           <h1 className="text-2xl font-bold text-orange-600">ROZGAR</h1>
+//         </Link>
+//       </div>
+
+//       {/* Right: Theme Toggle and Profile Avatar */}
+//       <div className="flex items-center gap-2">
+//         <DropdownMenu>
+//           <DropdownMenuTrigger asChild>
+//             <Button
+//               variant="outline"
+//               size="icon"
+//               className="border-2 border-gray-700 text-gray-700 dark:border-gray-200 dark:text-gray-200 hover:border-black"
+//             >
+//               <Sun className="h-5 w-5 dark:hidden" />
+//               <Moon className="h-5 w-5 hidden dark:block" />
+//             </Button>
+//           </DropdownMenuTrigger>
+//           <DropdownMenuContent align="end">
+//             <DropdownMenuItem onClick={() => setTheme("light")}>
+//               Light
+//             </DropdownMenuItem>
+//             <DropdownMenuItem onClick={() => setTheme("dark")}>
+//               Dark
+//             </DropdownMenuItem>
+//           </DropdownMenuContent>
+//         </DropdownMenu>
+//         <Avatar className="border-2 border-gray-700 dark:border-gray-200">
+//           <AvatarImage src={user?.profilePicture} alt="Profile" />
+//           <AvatarFallback>CN</AvatarFallback>
+//         </Avatar>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// export default Navbar;
+
+
+
+profile
+
+
+// import { Loader2, User, MapPin, Mail, LocateIcon, MapPinnedIcon, Plus, Key } from "lucide-react";
+// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+// import { useRef, useState } from "react";
+// import { Input } from "./ui/input";
+// import { Label } from "./ui/label";
+// import { Button } from "./ui/button";
+// import { useUserStore } from "@/store/useUserStore";
+// import { Link } from "react-router-dom";
+
+// const Profile = () => {
+//   const { user, updateProfile } = useUserStore();
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [profileData, setProfileData] = useState({
+//     fullname: user?.fullname || "",
+//     email: user?.email || "",
+//     address: user?.address || "",
+//     city: user?.city || "",
+//     country: user?.country || "",
+//     profilePicture: user?.profilePicture || "",
+//   });
+
+//   const imageRef = useRef(null);
+//   const [selectedProfilePicture, setSelectedProfilePicture] = useState(
+//     profileData.profilePicture || ""
+//   );
+
+//   const fileChangeHandler = (e) => {
+//     const file = e.target.files?.[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         const result = reader.result;
+//         setSelectedProfilePicture(result);
+//         setProfileData((prevData) => ({
+//           ...prevData,
+//           profilePicture: result,
+//         }));
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   };
+
+//   const changeHandler = (e) => {
+//     const { name, value } = e.target;
+//     setProfileData({ ...profileData, [name]: value });
+//   };
+
+//   const updateProfileHandler = async (e) => {
+//     e.preventDefault();
+//     try {
+//       setIsLoading(true);
+//       await updateProfile(profileData);
+//       setIsLoading(false);
+//     } catch (error) {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={updateProfileHandler} className="max-w-7xl mx-auto my-5">
+//       <div className="flex items-center justify-between">
+//         <div className="flex items-center gap-2">
+//           <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
+//             <AvatarImage src={selectedProfilePicture} />
+//             <AvatarFallback>CN</AvatarFallback>
+//             <input
+//               ref={imageRef}
+//               className="hidden"
+//               type="file"
+//               accept="image/*"
+//               onChange={fileChangeHandler}
+//             />
+//             <div
+//               onClick={() => imageRef.current?.click()}
+//               className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-full cursor-pointer"
+//             >
+//               <Plus className="text-white w-8 h-8" />
+//             </div>
+//           </Avatar>
+//           <Input
+//             type="text"
+//             name="fullname"
+//             value={profileData.fullname}
+//             onChange={changeHandler}
+//             className="font-bold text-2xl outline-none border-none focus-visible:ring-transparent"
+//           />
+//         </div>
+//       </div>
+//       <div className="mt-4 flex justify-between items-center">
+//         <Link 
+//         to="/reset-password" 
+//         className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+//       >
+//         <Key className="w-5 h-5" /> Reset Password
+//       </Link>
+//     </div>
+//       <div className="grid md:grid-cols-4 md:gap-2 gap-3 my-10">
+//         <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
+//           <Mail className="text-gray-500" />
+//           <div className="w-full">
+//             <Label>Email</Label>
+//             <input
+//               disabled
+//               name="email"
+//               value={profileData.email}
+//               onChange={changeHandler}
+//               className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
+//             />
+//           </div>
+//         </div>
+//         <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
+//           <LocateIcon className="text-gray-500" />
+//           <div className="w-full">
+//             <Label>Address</Label>
+//             <input
+//               name="address"
+//               value={profileData.address}
+//               onChange={changeHandler}
+//               className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
+//             />
+//           </div>
+//         </div>
+//         <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
+//           <MapPin className="text-gray-500" />
+//           <div className="w-full">
+//             <Label>City</Label>
+//             <input
+//               name="city"
+//               value={profileData.city}
+//               onChange={changeHandler}
+//               className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
+//             />
+//           </div>
+//         </div>
+//         <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
+//           <MapPinnedIcon className="text-gray-500" />
+//           <div className="w-full">
+//             <Label>Country</Label>
+//             <input
+//               name="country"
+//               value={profileData.country}
+//               onChange={changeHandler}
+//               className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
+//             />
+//           </div>
+//         </div>
+//       </div>
+//       <div className="text-center">
+//         {isLoading ? (
+//           <Button disabled className="bg-orange hover:bg-hoverOrange">
+//             <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+//             Please wait
+//           </Button>
+//         ) : (
+//           <Button type="submit" className="bg-orange hover:bg-hoverOrange">
+//             Update
+//           </Button>
+//         )}
+//       </div>
+//     </form>
+//   );
+// };
+
+// export default Profile;
+
+
+
+
+
+SearchPage
+
+
+
+// const SearchPage = () => {
+//   const params = useParams();
+//   const navigate = useNavigate();
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const {
+//     loading,
+//     searchedWorkers,
+//     searchWorkers,
+//     setAppliedFilter,
+//     appliedFilter,
+//     DeleteWorker
+//   } = useWorkersStore();
+
+//   useEffect(() => {
+//     searchWorkers(params.text, searchQuery, appliedFilter);
+//   }, [params.text, appliedFilter]);
+
+//   const deleteCall = async (workerId) => {
+//     try {
+//         await DeleteWorker(workerId); // ✅ Call DeleteWorker with workerId
+//         console.log(workerId)
+//         // ✅ Pass workerId correctly in navigate state
+//         navigate("/admin/verification-for-Delete-Worker", { state: { workerId } });
+//     } catch (error) {
+//         console.error("Error in deleteCall:", error);
+//     }
+// };
+
+
+//   return (
+//     <div className="max-w-7xl mx-auto my-10 px-4">
+//       <div className="flex flex-col md:flex-row justify-between gap-10">
+//         <FilterPage />
+//         <div className="flex-1">
+//           {/* Search Input Field */}
+//           <div className="flex items-center gap-3 mb-6">
+//             <Input
+//               type="text"
+//               value={searchQuery}
+//               placeholder="Search by Worker's Name or His passion"
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//               className="w-full md:max-w-lg"
+//             />
+//             <Button
+//               onClick={() =>
+//                 searchWorkers(params.text, searchQuery, appliedFilter)
+//               }
+//               className="bg-orange hover:bg-hoverOrange transition-colors duration-200"
+//             >
+//               Search
+//             </Button>
+//           </div>
+//           {/* Searched Items Display */}
+//           <div>
+//             <div className="flex flex-col md:flex-row md:items-center md:gap-4 mb-4">
+//               <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+//                 ({searchedWorkers?.data.length}) Search result
+//                 {searchedWorkers?.data.length === 1 ? "" : "s"} found
+//               </h1>
+//               <div className="flex flex-wrap gap-2">
+//                 {appliedFilter.map((selectedFilter, idx) => (
+//                   <div
+//                     key={idx}
+//                     className="relative inline-flex items-center max-w-full"
+//                   >
+//                     <Badge
+//                       className="text-orange-600 border-orange-600 rounded-md pr-7 whitespace-nowrap hover:cursor-pointer"
+//                       variant="outline"
+//                     >
+//                       {selectedFilter}
+//                     </Badge>
+//                     <X
+//                       onClick={() => setAppliedFilter(selectedFilter)}
+//                       size={16}
+//                       className="absolute text-orange-600 right-1 top-1 hover:cursor-pointer"
+//                     />
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//             {/* Workers Cards */}
+//             <div className="grid md:grid-cols-3 gap-6">
+//               {loading ? (
+//                 <SearchPageSkeleton />
+//               ) : !loading && searchedWorkers?.data.length === 0 ? (
+//                 <NoResultFound searchText={params.text} />
+//               ) : (
+//                 searchedWorkers?.data.map((Workers) => (
+//                   <Card
+//                     key={Workers._id}
+//                     className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+//                   >
+//                     <div className="relative">
+//                       <AspectRatio ratio={16 / 6}>
+//                         <img
+//                           src={Workers.imageUrl}
+//                           alt=""
+//                           className="w-full h-full object-cover"
+//                         />
+//                       </AspectRatio>
+//                       <div className="absolute top-3 left-3 bg-white dark:bg-gray-700 bg-opacity-80 rounded-lg px-3 py-1">
+//                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+//                           Featured
+//                         </span>
+//                       </div>
+//                     </div>
+//                     <CardContent className="p-5">
+//                       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+//                         {Workers.WorkersName}
+//                       </h1>
+//                       <div className="mt-3 flex items-center gap-2 text-gray-600 dark:text-gray-400">
+//                         <MapPin size={16} />
+//                         <p className="text-sm">
+//                           City: <span className="font-medium">{Workers.city}</span>
+//                         </p>
+//                       </div>
+//                       <div className="mt-1 flex items-center gap-2 text-gray-600 dark:text-gray-400">
+//                         <Globe size={16} />
+//                         <p className="text-sm">
+//                           Country: <span className="font-medium">{Workers.country}</span>
+//                         </p>
+//                       </div>
+//                       <div className="flex gap-2 mt-4 flex-wrap">
+//                         {Workers.cuisines.map((cuisine, idx) => (
+//                           <Badge
+//                             key={idx}
+//                             className="font-medium px-3 py-1 rounded-full shadow-sm"
+//                           >
+//                             {cuisine}
+//                           </Badge>
+//                         ))}
+//                       </div>
+//                     </CardContent>
+//                     <CardFooter className="flex justify-between items-center p-5 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+//                       <div className="flex items-center gap-2">
+//                         <div className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+//                           {Workers.rating ? Workers.rating.toFixed(1) : "N/A"}
+//                         </div>
+//                         <StarRating rating={Workers.rating || 0} />
+//                         <span className="text-sm text-gray-600 dark:text-gray-400">
+//                           ({Workers.reviews.length})
+//                         </span>
+//                       </div>
+//                       <Link to={`/Workers/${Workers._id}`}>
+//                       {/* {console.log(Workers._id)} */}
+//                         <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2 px-2 rounded-full shadow-md transition-transform duration-200 hover:scale-105">
+//                           View Details
+//                         </Button>
+//                       </Link>
+//                     </CardFooter>
+//                     <div onClick={() => deleteCall(Workers._id)}>delete</div>
+
+//                   </Card>
+//                 ))
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+// import { Link, useParams } from "react-router-dom";
+// import FilterPage from "./FilterPage";
+// import { Input } from "./ui/input.jsx";
+// import { useEffect, useState } from "react";
+// import { Button } from "./ui/button.jsx";
+// import { Badge } from "./ui/badge.jsx";
+// import { Globe, MapPin, X } from "lucide-react";
+// import { Card, CardContent, CardFooter } from "./ui/card";
+// import { AspectRatio } from "./ui/aspect-ratio";
+// import { Skeleton } from "./ui/skeleton";
+// import { useWorkersStore } from "@/store/useWorkersStore";
+// import StarRating from "./StarRating";
+
+// const SearchPage = () => {
+//   const params = useParams();
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const {
+//     loading,
+//     searchedWorkers,
+//     searchWorkers,
+//     setAppliedFilter,
+//     appliedFilter,
+//   } = useWorkersStore();
+
+//   useEffect(() => {
+//     searchWorkers(params.text, searchQuery, appliedFilter);
+//   }, [params.text, appliedFilter]);
+
+//   return (
+//     <div className="max-w-7xl mx-auto my-10">
+//       <div className="flex flex-col md:flex-row justify-between gap-10">
+//         <FilterPage />
+//         <div className="flex-1">
+//           {/* Search Input Field */}
+//           <div className="flex items-center gap-2">
+//             <Input
+//               type="text"
+//               value={searchQuery}
+//               placeholder="Search by Worker's Name or His passion"
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//             />
+//             <Button
+//               onClick={() =>
+//                 searchWorkers(params.text, searchQuery, appliedFilter)
+//               }
+//               className="bg-orange hover:bg-hoverOrange"
+//             >
+//               Search
+//             </Button>
+//           </div>
+//           {/* Searched Items display here */}
+//           <div>
+//             <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-2 my-3">
+//               <h1 className="font-medium text-lg">
+//                 ({searchedWorkers?.data.length}) Search result found
+//               </h1>
+//               <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
+//                 {appliedFilter.map((selectedFilter, idx) => (
+//                   <div
+//                     key={idx}
+//                     className="relative inline-flex items-center max-w-full"
+//                   >
+//                     <Badge
+//                       className="text-[#D19254] rounded-md hover:cursor-pointer pr-6 whitespace-nowrap"
+//                       variant="outline"
+//                     >
+//                       {selectedFilter}
+//                     </Badge>
+//                     <X
+//                       onClick={() => setAppliedFilter(selectedFilter)}
+//                       size={16}
+//                       className="absolute text-[#D19254] right-1 hover:cursor-pointer"
+//                     />
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//             {/* Workers Cards */}
+//             <div className="grid md:grid-cols-3 gap-4">
+//               {loading ? (
+//                 <SearchPageSkeleton />
+//               ) : !loading && searchedWorkers?.data.length === 0 ? (
+//                 <NoResultFound searchText={params.text} />
+//               ) : (
+//                 searchedWorkers?.data.map((Workers) => (
+//                   <Card
+//                     key={Workers._id}
+//                     className="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+//                   >
+//                     <div className="relative">
+//                       <AspectRatio ratio={16 / 6}>
+//                         <img
+//                           src={Workers.imageUrl}
+//                           alt=""
+//                           className="w-full h-full object-cover"
+//                         />
+//                       </AspectRatio>
+//                       <div className="absolute top-2 left-2 bg-white dark:bg-gray-700 bg-opacity-75 rounded-lg px-3 py-1">
+//                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+//                           Featured
+//                         </span>
+//                       </div>
+//                     </div>
+//                     <CardContent className="p-4">
+//                       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+//                         {Workers.WorkersName}
+//                       </h1>
+//                       <div className="mt-2 gap-1 flex items-center text-gray-600 dark:text-gray-400">
+//                         <MapPin size={16} />
+//                         <p className="text-sm">
+//                           City:{" "}
+//                           <span className="font-medium">{Workers.city}</span>
+//                         </p>
+//                       </div>
+//                       <div className="mt-2 gap-1 flex items-center text-gray-600 dark:text-gray-400">
+//                         <Globe size={16} />
+//                         <p className="text-sm">
+//                           Country:{" "}
+//                           <span className="font-medium">
+//                             {Workers.country}
+//                           </span>
+//                         </p>
+//                       </div>
+//                       <div className="flex gap-2 mt-4 flex-wrap">
+//                         {Workers.cuisines.map((cuisine, idx) => (
+//                           <Badge
+//                             key={idx}
+//                             className="font-medium px-2 py-1 rounded-full shadow-sm"
+//                           >
+//                             {cuisine}
+//                           </Badge>
+//                         ))}
+
+//                       </div>
+//                     </CardContent>
+//                     <CardFooter className="gap-9 p-4 border-t dark:border-t-gray-700 border-t-gray-100 text-white flex justify-end">
+//                       <div className="flex items-center gap-2">
+//                         <div className="text-black">{Workers.reviews.length}</div>
+//                         <StarRating rating={Workers.rating || 0} /> {/* Use StarRating component */}
+//                         <span className="text-sm font-medium">
+//                           {Workers.rating ? Workers.rating.toFixed(1) : "N/A"}
+//                         </span>
+//                       </div>
+//                       <Link to={`/Workers/${Workers._id}`}>
+//                         <Button className="bg-orange hover:bg-hoverOrange font-semibold py-2 px-4 rounded-full shadow-md transition-colors duration-200">
+//                           View Details
+//                         </Button>
+//                       </Link>
+//                     </CardFooter>
+//                   </Card>
+//                 ))
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;
+
+// const SearchPageSkeleton = () => {
+//   return (
+//     <>
+//       {[...Array(3)].map((_, index) => (
+//         <Card
+//           key={index}
+//           className="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden"
+//         >
+//           <div className="relative">
+//             <AspectRatio ratio={16 / 6}>
+//               <Skeleton className="w-full h-full" />
+//             </AspectRatio>
+//           </div>
+//           <CardContent className="p-4">
+//             <Skeleton className="h-8 w-3/4 mb-2" />
+//             <div className="mt-2 gap-1 flex items-center text-gray-600 dark:text-gray-400">
+//               <Skeleton className="h-4 w-1/2" />
+//             </div>
+//             <div className="mt-2 flex gap-1 items-center text-gray-600 dark:text-gray-400">
+//               <Skeleton className="h-4 w-1/2" />
+//             </div>
+//             <div className="flex gap-2 mt-4 flex-wrap">
+//               <Skeleton className="h-6 w-20" />
+//               <Skeleton className="h-6 w-20" />
+//               <Skeleton className="h-6 w-20" />
+//             </div>
+//           </CardContent>
+//           <CardFooter className="p-4  dark:bg-gray-900 flex justify-end">
+//             <Skeleton className="h-10 w-24 rounded-full" />
+//           </CardFooter>
+//         </Card>
+//       ))}
+//     </>
+//   );
+// };
+
+// const NoResultFound = ({ searchText }) => {
+//   return (
+//     <div className="text-center">
+//       <h1 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">
+//         No results found
+//       </h1>
+//       <p className="mt-2 text-gray-500 dark:text-gray-400">
+//         We couldn't find any results for "{searchText}". <br /> Try searching
+//         with a different term.
+//       </p>
+//       <Link to="/">
+//         <Button className="mt-4 bg-orange hover:bg-orangeHover">
+//           Go Back to Home
+//         </Button>
+//       </Link>
+//     </div>
+//   );
+// };
+
+
+
+
+
+WorkersDeatils
+
+
+
+// import { useWorkersStore } from "@/store/useWorkersStore";
+// import AvailableMenu from "./AvailableMenu";
+// import { Badge } from "./ui/badge.jsx";
+// import { Timer } from "lucide-react";
+// import { PhoneOutgoing } from "lucide-react";
+// import { useEffect } from "react";
+// import { useParams } from "react-router-dom";
+// import AddReviewForm from "./AddReviewForm";
+// import WorkersReviews from "./WorkersReviews";
+
+// const WorkersDetail = () => {
+//   const params = useParams();
+//   const { singleWorkers, getSingleWorkers } = useWorkersStore();
+//   const user = JSON.parse(localStorage.getItem("user-name"));
+//   const state=user.state.user
+//   const userId = {id:(state ? state._id : null),name:(state ? state.fullname : null)};
+//   useEffect(() => {
+//     getSingleWorkers(params.id); 
+//   }, [params.id]);
+
+//   return (
+//     <div className="max-w-6xl mx-auto my-10">
+//       <div className="w-full">
+//         <div className="relative w-full h-32 md:h-64 lg:h-72">
+//           <img
+//             src={singleWorkers?.imageUrl || "Loading..."}
+//             alt="res_image"
+//             className="object-cover w-full h-full rounded-lg shadow-lg"
+//           />
+//         </div>
+//         <div className="flex flex-col md:flex-row justify-between">
+//           <div className="my-5">
+//             <h1 className="font-medium text-xl">
+//               {singleWorkers?.WorkersName || "Loading..."}
+//             </h1>
+//             <div className="flex gap-2 my-2">
+//               {singleWorkers?.cuisines.map((cuisine, idx) => (
+//                 <Badge key={idx}>{cuisine}</Badge>
+//               ))}
+//             </div>
+//             <div className="flex md:flex-row flex-col gap-2 my-5">
+//               <div className="flex items-center gap-2">
+//                 <PhoneOutgoing className="w-5 h-5" />
+//                 <h1 className="flex items-center gap-2 font-medium">
+//                   Contect No.:
+//                   <span className="text-[#D19254]">
+//                     {singleWorkers?.contactNo || "NA"}
+//                   </span>
+//                 </h1>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         {singleWorkers?.menus && <AvailableMenu menus={singleWorkers.menus} />}
+//         <AddReviewForm WorkersId={params.id} userId={userId.id} fullname={userId.fullname} />
+//         <WorkersReviews WorkersId={params.id} />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default WorkersDetail;
+
+
+
+
+
+// import { useWorkersStore } from "@/store/useWorkersStore";
+// import { Badge } from "./ui/badge";
+// import { PhoneOutgoing } from "lucide-react";
+// import { useEffect } from "react";
+// import { useParams } from "react-router-dom";
+// import AddReviewForm from "./AddReviewForm";
+// import WorkersReviews from "./WorkersReviews";
+// import { Link,useNavigate } from "react-router-dom";
+
+// const WorkersDetail = () => {
+//   const params = useParams();
+//   const navigate = useNavigate();
+//   const { singleWorkers, getSingleWorkers,getInformation } = useWorkersStore();
+//   const user = JSON.parse(localStorage.getItem("user-name"));
+//   const state = user?.state?.user;
+//   const userId = { id: state ? state._id : null, name: state ? state.fullname : null };
+
+//   useEffect(() => {
+//     getSingleWorkers(params.id);
+//   }, [params.id]);
+
+//   const takeInformation = async (workerId) => {
+//     try {
+//         const information = await getInformation(workerId); // ✅ Call DeleteWorker with workerId
+//         console.log(information+"    informtion"+      workerId)
+//         // ✅ Pass workerId correctly in navigate state
+//         navigate("/admin/UpdateLocalWorkers");
+//     } catch (error) {
+//         console.error("Error in deleteCall:", error);
+//     }
+// };
+
+//   return (
+//     <div className="max-w-7xl mx-auto my-10 px-4">
+//       {/* Split Layout */}
+//       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+//         {/* Left Side: Worker Image and Details */}
+//         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+//           {/* Worker Image */}
+//           <div className="relative w-full h-80 md:h-80 rounded-lg overflow-hidden">
+//             <img
+//               src={singleWorkers?.imageUrl || "https://via.placeholder.com/800x400"}
+//               alt="Worker Image"
+//               className="object-cover w-80 h-80 rounded-full mx-auto"
+//             />
+//             {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div> */}
+//           </div>
+
+//           {/* Worker Details */}
+//           <div className="mt-6">
+//             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+//               {singleWorkers?.WorkersName || "Loading..."}
+//             </h1>
+//             <div className="flex flex-wrap gap-2 mt-4">
+//               {singleWorkers?.cuisines?.map((cuisine, idx) => (
+//                 <Badge key={idx} className="bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100">
+//                   {cuisine}
+//                 </Badge>
+//               ))}
+//             </div>
+//             <div className="mt-6 flex items-center gap-4 text-gray-700 dark:text-gray-300">
+//               <PhoneOutgoing className="w-5 h-5" />
+//               <span className="font-medium">Contact No.:</span>
+//               <span className="text-orange-600 dark:text-orange-400">
+//                 {singleWorkers?.contactNo || "N/A"}
+//               </span>
+//             </div>
+//           </div>
+//             <div onClick={() => takeInformation(singleWorkers._id)}>Update Details</div>
+//         </div>
+
+//         {/* Right Side: Add Review Form and Reviews */}
+//         <div className="space-y-8">
+//           {/* Add Review Form */}
+//           <AddReviewForm WorkersId={params.id} userId={userId.id} fullname={userId.name} />
+
+//           {/* Worker Reviews */}
+//           <WorkersReviews WorkersId={params.id} />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default WorkersDetail;
+
+
+
+

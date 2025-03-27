@@ -1,17 +1,11 @@
-import {
-  Loader2,
-  LocateIcon,
-  Mail,
-  MapPin,
-  MapPinnedIcon,
-  Plus,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { useRef, useState } from "react";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Button } from "./ui/button";
+
+import React, { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useUserStore } from "@/store/useUserStore";
+import { Loader2, User, MapPin, LocateIcon, MapPinnedIcon, Plus, Key, Mail } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
@@ -27,9 +21,7 @@ const Profile = () => {
   });
 
   const imageRef = useRef(null);
-  const [selectedProfilePicture, setSelectedProfilePicture] = useState(
-    profileData.profilePicture || ""
-  );
+  const [selectedProfilePicture, setSelectedProfilePicture] = useState(profileData.profilePicture || "");
 
   const fileChangeHandler = (e) => {
     const file = e.target.files?.[0];
@@ -64,12 +56,19 @@ const Profile = () => {
   };
 
   return (
-    <form onSubmit={updateProfileHandler} className="max-w-7xl mx-auto my-5">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
+    <form 
+      onSubmit={updateProfileHandler} 
+      className="max-w-5xl mx-auto my-10 p-6 rounded-lg shadow-md"
+    >
+      {/* Avatar & Name */}
+      <div className="flex items-center gap-4">
+        {/* Circular Avatar */}
+        <div className="relative w-28 h-28">
+          <Avatar className="w-full h-full rounded-full border-4 border-gray-300 shadow-md">
             <AvatarImage src={selectedProfilePicture} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback className="w-full h-full flex items-center justify-center bg-gray-500 text-white rounded-full">
+              CN
+            </AvatarFallback>
             <input
               ref={imageRef}
               className="hidden"
@@ -84,80 +83,97 @@ const Profile = () => {
               <Plus className="text-white w-8 h-8" />
             </div>
           </Avatar>
-          <Input
-            type="text"
-            name="fullname"
-            value={profileData.fullname}
-            onChange={changeHandler}
-            className="font-bold text-2xl outline-none border-none focus-visible:ring-transparent"
-          />
         </div>
+        {/* Name Input */}
+        <Input
+          type="text"
+          name="fullname"
+          value={profileData.fullname}
+          onChange={changeHandler}
+          placeholder="Update your name"
+          className="font-bold text-2xl text-gray-900 dark:text-white border border-gray-300 rounded-md px-3 py-2"
+        />
       </div>
+
+      {/* Reset Password Button */}
       <div className="mt-4">
-        <Link to="/reset-password" className="hover:text-blue-500 hover:underline">
-          Reset Password
+        <Link 
+          to="/reset-password" 
+          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          <Key className="w-5 h-5" /> Reset Password
         </Link>
       </div>
-      <div className="grid md:grid-cols-4 md:gap-2 gap-3 my-10">
-        <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
-          <Mail className="text-gray-500" />
-          <div className="w-full">
-            <Label>Email</Label>
-            <input
-              disabled
-              name="email"
-              value={profileData.email}
-              onChange={changeHandler}
-              className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
-            />
+
+      {/* Two-Column Form Fields */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 p-3 border border-gray-300 rounded-md">
+            <Mail className="text-gray-500" />
+            <div className="w-full">
+              <Label>Email</Label>
+              <input
+                disabled
+                name="email"
+                value={profileData.email}
+                className="w-full text-gray-600 bg-transparent border-none px-2 py-1 focus:ring-0"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-3 border border-gray-300 rounded-md">
+            <LocateIcon className="text-gray-500" />
+            <div className="w-full">
+              <Label>Address</Label>
+              <input
+                name="address"
+                value={profileData.address}
+                onChange={changeHandler}
+                placeholder="Update your address"
+                className="w-full text-gray-600 bg-transparent border-none px-2 py-1 focus:ring-0"
+              />
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
-          <LocateIcon className="text-gray-500" />
-          <div className="w-full">
-            <Label>Address</Label>
-            <input
-              name="address"
-              value={profileData.address}
-              onChange={changeHandler}
-              className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
-            />
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 p-3 border border-gray-300 rounded-md">
+            <MapPin className="text-gray-500" />
+            <div className="w-full">
+              <Label>City</Label>
+              <input
+                name="city"
+                value={profileData.city}
+                onChange={changeHandler}
+                placeholder="Update your city"
+                className="w-full text-gray-600 bg-transparent border-none px-2 py-1 focus:ring-0"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
-          <MapPin className="text-gray-500" />
-          <div className="w-full">
-            <Label>City</Label>
-            <input
-              name="city"
-              value={profileData.city}
-              onChange={changeHandler}
-              className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
-            />
-          </div>
-        </div>
-        <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
-          <MapPinnedIcon className="text-gray-500" />
-          <div className="w-full">
-            <Label>Country</Label>
-            <input
-              name="country"
-              value={profileData.country}
-              onChange={changeHandler}
-              className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
-            />
+          <div className="flex items-center gap-3 p-3 border border-gray-300 rounded-md">
+            <MapPinnedIcon className="text-gray-500" />
+            <div className="w-full">
+              <Label>Country</Label>
+              <input
+                name="country"
+                value={profileData.country}
+                onChange={changeHandler}
+                placeholder="Update your country"
+                className="w-full text-gray-600 bg-transparent border-none px-2 py-1 focus:ring-0"
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Submit Button */}
       <div className="text-center">
         {isLoading ? (
-          <Button disabled className="bg-orange hover:bg-hoverOrange">
+          <Button disabled className="bg-orange-500 hover:bg-orange-600 text-white">
             <Loader2 className="mr-2 w-4 h-4 animate-spin" />
             Please wait
           </Button>
         ) : (
-          <Button type="submit" className="bg-orange hover:bg-hoverOrange">
-            Update
+          <Button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white">
+            Update Profile
           </Button>
         )}
       </div>

@@ -5,7 +5,7 @@ export const WorkersFromSchema = z.object({
   city: z.string().nonempty({ message: "City is required" }),
   country: z.string().nonempty({ message: "Country is required" }),
   contactNo: z.string().regex(/^[0-9]{10}$/, { message: "Contact number must be exactly 10 digits" }),
-  cuisines: z.array(z.string()),
+  Occupations: z.array(z.string()),
   imageFile: z
     .instanceof(File)
     .optional()

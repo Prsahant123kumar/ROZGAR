@@ -16,13 +16,11 @@ export const useUserStore = create(
       // signup api implementation
       signup: async (input) => {
         try {
-          console.log("helo");
           set({ loading: true });
           
           const response = await axios.post(`${API_END_POINT}/signup`, input, {
             headers: { "Content-Type": "application/json" },
           });
-          console.log(response)
           if (response.data.success) {
             toast.success(response.data.message);
             set({ loading: false, user: response.data.user, isAuthenticated: true });
@@ -32,7 +30,6 @@ export const useUserStore = create(
           }
         } catch (error) {
           toast.error(error.response?.data?.message || "Signup failed"); // ✅ Correct way
-          console.log(error.response?.data?.message); // ✅ Debugging
           set({ loading: false });
           throw error;
         }
@@ -139,7 +136,6 @@ export const useUserStore = create(
       },
       resetPassword: async (take) => {
         try {
-          console.log("efr");
           set({ loading: true });
           const response = await axios.post(
             `${API_END_POINT}/reset-password`,

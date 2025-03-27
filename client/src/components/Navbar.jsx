@@ -1,5 +1,11 @@
-import { Link } from "react-router-dom";
- // Adjust path if needed
+
+
+
+
+
+
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   Menubar,
   MenubarContent,
@@ -23,7 +29,9 @@ import {
   ShoppingCart,
   SquareMenu,
   Sun,
-  User,
+  LogOut,
+  UserPlus,
+  LayoutDashboard,
   UtensilsCrossed,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -39,205 +47,193 @@ import {
 } from "./ui/sheet";
 import { Separator } from "./ui/separator";
 import { useUserStore } from "@/store/useUserStore";
-import { useThemeStore } from "@/store/useThemeStore"; // Assuming this is the correct import
+import { useThemeStore } from "@/store/useThemeStore";
 
-const Navbar = () => {
+const activeClass = "text-orange-600 font-medium";
+const inactiveClass = "text-gray-700 dark:text-gray-200 hover:text-orange-600";
+const DesktopNavbar = () => {
   const { user, loading, logout } = useUserStore();
   const { setTheme } = useThemeStore();
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex items-center justify-between h-14">
-        <Link to="/">
-          <h1 className="font-bold md:font-extrabold text-2xl">ROZGAR</h1>
+    <nav className="hidden md:flex bg-white dark:bg-gray-800 shadow-lg py-4 sticky top-0 z-50 w-full">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-12">
+        
+        {/* Logo - Shifted More to the Left */}
+        <Link to="/" >
+          <h1 className="text-3xl font-extrabold text-orange-600">ROZGAR</h1>
         </Link>
-        <div className="hidden md:flex items-center gap-10">
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/">Home</Link>
-            <Link to="/profile">Profile</Link>
-            <Link to="/order/status">Hire</Link>
 
-            {/* {user?.admin && ( */}
-              <Menubar>
-                <MenubarMenu>
-                  <MenubarTrigger>Dashboard</MenubarTrigger>
-                  <MenubarContent>
-                    <Link to="/admin/Workers">
-                      <MenubarItem>Add Worker</MenubarItem>
-                    </Link>
-                    {/* <Link to="/admin/menu">
-                      <MenubarItem>Menu</MenubarItem>
-                    </Link>
-                    <Link to="/admin/orders">
-                      <MenubarItem>Orders</MenubarItem>
-                    </Link> */}
-                  </MenubarContent>
-                </MenubarMenu>
-              </Menubar>
-            {/* )} */}
-          </div>
-          <div className="flex items-center gap-4">
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span className="sr-only">Toggle theme</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setTheme("light")}>
-                    Light
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("dark")}>
-                    Dark
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+        {/* Navigation Links - Increased Spacing */}
+        <div className="flex items-center gap-10 ml-20">
+          <NavLink to="/" className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+            Home
+          </NavLink>
+          <NavLink to="/profile" className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+            Profile
+          </NavLink>
+          <Menubar>
+            <MenubarMenu>
+              <MenubarTrigger className="text-gray-700 dark:text-gray-200 hover:text-black flex items-center gap-2">
+                <LayoutDashboard className="h-5 w-5" /> Dashboard
+              </MenubarTrigger>
+              <MenubarContent className="w-48">
+                <NavLink to="/admin/Workers" className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+                  <MenubarItem className="flex items-center gap-2">
+                    <UserPlus className="h-5 w-5" /> Add Worker
+                  </MenubarItem>
+                </NavLink>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
+        </div>
+
+        {/* Right Side - Increased Spacing */}
+        <div className="flex items-center gap-10 ml-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="border-2 border-gray-700 text-gray-700 dark:border-gray-200 dark:text-gray-200 hover:border-black">
+                <Sun className="h-5 w-5 dark:hidden" />
+                <Moon className="h-5 w-5 hidden dark:block" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Avatar - Moved More Right */}
+          <Avatar className="border-2 border-gray-700 dark:border-gray-200">
+            <AvatarImage src={user?.profilePicture} alt="Profile" />
+            <AvatarFallback>👤</AvatarFallback>
+          </Avatar>
+
+          {/* Logout Button - Moved More Right */}
+          {loading ? (
+            <div className="flex items-center text-gray-700 dark:text-gray-200">
+              <Loader2 className="animate-spin h-5 w-5 mr-2" /> Please wait...
             </div>
-            <div>
-              <Avatar>
-                <AvatarImage src={user?.profilePicture} alt="profilephoto" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-            <div>
-              {loading ? (
-                <Button className="bg-orange hover:bg-hoverOrange">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
-                </Button>
-              ) : (
-                <Button
+          ) : (
+            <NavLink
+              to="#"
+              onClick={logout}
+              className={({ isActive }) => `flex items-center gap-4 ${isActive ? "text-black font-bold" : " dark:text-gray-200 hover:text-black"}`}
+            >
+              <LogOut className="h-5 w-5" /> Logout
+            </NavLink>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+
+
+
+const MobileNavbar = () => {
+  const { user, logout, loading } = useUserStore();
+  const { setTheme } = useThemeStore();
+
+  return (
+    <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 shadow-lg">
+      {/* Left: Hamburger menu (opens sheet from left side) */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            size="icon"
+            className="rounded-full bg-gray-200 text-black hover:bg-gray-200"
+            variant="outline"
+          >
+            <Menu size="18" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="p-4 w-64 left-0">
+          <SheetHeader className="mb-4">
+            <SheetTitle>ROZGAR</SheetTitle>
+          </SheetHeader>
+          <div className="space-y-2">
+            <Link
+              to="/profile"
+              className="block py-2 text-gray-700 dark:text-gray-200 hover:text-black"
+            >
+              Profile
+            </Link>
+            <Link
+              to="/admin/Workers"
+              className="block py-2 text-gray-700 dark:text-gray-200 hover:text-black"
+            >
+              Add Worker
+            </Link>
+            {loading ? (
+              <div className="flex items-center text-gray-700 dark:text-gray-200 py-2">
+                <Loader2 className="animate-spin h-5 w-5 mr-2" /> Please wait...
+              </div>
+            ) : (
+              <SheetClose asChild>
+                <button
                   onClick={logout}
-                  className="bg-orange hover:bg-hoverOrange"
+                  className="w-full text-left py-2 text-gray-700 dark:text-gray-200 hover:text-black"
                 >
-                  Logout
-                </Button>
-              )}
-            </div>
+                  <LogOut className="inline-block h-5 w-5 mr-2" /> Logout
+                </button>
+              </SheetClose>
+            )}
           </div>
-        </div>
-        <div className="md:hidden lg:hidden">
-          {/* Mobile responsive */}
-          <MobileNavbar />
-        </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Center: ROZGAR Title */}
+      <div>
+        <Link to="/">
+          <h1 className="text-2xl font-bold text-orange-600">ROZGAR</h1>
+        </Link>
+      </div>
+
+      {/* Right: Theme Toggle and Avatar */}
+      <div className="flex items-center gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-2 border-gray-700 text-gray-700 dark:border-gray-200 dark:text-gray-200 hover:border-black"
+            >
+              <Sun className="h-5 w-5 dark:hidden" />
+              <Moon className="h-5 w-5 hidden dark:block" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              Dark
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Avatar className="border-2 border-gray-700 dark:border-gray-200">
+          <AvatarImage src={user?.profilePicture} alt="Profile" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
       </div>
     </div>
   );
 };
 
-const MobileNavbar = () => {
-  const { user, logout, loading } = useUserStore();
-  const { setTheme } = useThemeStore();
+
+
+
+
+const Navbar = () => {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button
-          size={"icon"}
-          className="rounded-full bg-gray-200 text-black hover:bg-gray-200"
-          variant="outline"
-        >
-          <Menu size={"18"} />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="flex flex-col">
-        <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle>ROZGAR</SheetTitle>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                Dark
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SheetHeader>
-        <Separator className="my-2" />
-        <SheetDescription className="flex-1">
-          <Link
-            to="/profile"
-            className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
-          >
-            <User />
-            <span>Profile</span>
-          </Link>
-          <Link
-            to="/order/status"
-            className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
-          >
-            <HandPlatter />
-            <span>HIRE</span>
-          </Link>
-          <Link
-            to="/cart"
-            className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
-          >
-            <ShoppingCart />
-            <span>Cart (0)</span>
-          </Link>
-          {/* {user?.admin && ( */}
-            <>
-              <Link
-                to="/admin/AddWorkers"
-                className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
-              >
-                <SquareMenu />
-                <span>Details</span>
-              </Link>
-              <Link
-                to="/admin/Workers"
-                className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
-              >
-                <UtensilsCrossed />
-                <span>Workers</span>
-              </Link>
-              <Link
-                to="/admin/orders"
-                className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
-              >
-                <PackageCheck />
-                <span>Details</span>
-              </Link>
-            </>
-          {/* )} */}
-        </SheetDescription>
-        <SheetFooter className="flex flex-col gap-4">
-          <div className="flex flex-row items-center gap-2">
-            <Avatar>
-              <AvatarImage src={user?.profilePicture} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <h1 className="font-bold">ROZGAR</h1>
-          </div>
-          <SheetClose asChild>
-            {loading ? (
-              <Button className="bg-orange hover:bg-hoverOrange">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </Button>
-            ) : (
-              <Button
-                onClick={logout}
-                className="bg-orange hover:bg-hoverOrange"
-              >
-                Logout
-              </Button>
-            )}
-          </SheetClose>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+    <>
+      <DesktopNavbar />
+      <div className="md:hidden">
+        <MobileNavbar />
+      </div>
+    </>
   );
 };
 

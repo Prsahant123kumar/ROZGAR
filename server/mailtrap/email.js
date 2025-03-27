@@ -23,7 +23,6 @@ const sendVerificationEmail = expressAsyncHandler(async (email, verificationToke
     subject: 'Verify your email',
     html: htmlContent.replace("{verificationToken}", verificationToken)
   };
-  console.log("Email");
 
   try {
     await transporter.sendMail(mailOptions);
@@ -51,7 +50,6 @@ const sendWelcomeEmail = expressAsyncHandler(async (email, name) => {
       name: name
     }
   };
-  console.log("Email");
 
   try {
     await transporter.sendMail(mailOptions);
@@ -71,7 +69,6 @@ const sendPasswordResetEmail = expressAsyncHandler(async (email, resetURL) => {
     subject: 'Reset your password',
     html: htmlContent
   };
-  console.log("Email");
 
   try {
     await transporter.sendMail(mailOptions);
@@ -93,7 +90,6 @@ const sendResetSuccessEmail = expressAsyncHandler(async (email) => {
     html: htmlContent,
     category: "Password Reset"
   };
-  console.log("Email");
 
   try {
     await transporter.sendMail(mailOptions);

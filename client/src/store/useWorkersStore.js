@@ -11,6 +11,7 @@ export const useWorkersStore = create(
     (set, get) => ({
       loading: false,
       Workers: null,
+      LocalWorkers:null,
       searchedWorkers: null,
       appliedFilter: [],
       singleWorkers: null,
@@ -34,12 +35,27 @@ export const useWorkersStore = create(
         }
       },
 
+      getInformation: async (workerId)=>{
+        try {
+          set({ loading: true });
+          const response = await axios.post(`${API_END_POINT}/information`,{workerId});
+          if (response.data.success) {
+            set({ loading: false, LocalWorkers: response.data.workers });
+          }
+        } catch (error) {
+          if (error.response?.status === 404) {
+            set({ LocalWorkers: null });
+          }
+          set({ loading: false });
+        }
+      },
+
       getWorkers: async () => {
         try {
           set({ loading: true });
           const response = await axios.get(`${API_END_POINT}/`);
           if (response.data.success) {
-            set({ loading: false, Workers: response.data.Workers });
+            set({ loading: false, Workers: response.data.workers });
           }
         } catch (error) {
           if (error.response?.status === 404) {
@@ -67,13 +83,78 @@ export const useWorkersStore = create(
         }
       },
 
-      searchWorkers: async (searchText, searchQuery, selectedCuisines) => {
+      DeleteWorker : async (WorkersId) => {
+        try {
+            set({ loading: true });
+            const response = await axios.post(`${API_END_POINT}/delete-worker`, { WorkersId });
+    
+            if (response.data.success) {
+                toast.success(response.data.message);
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "An error occurred");
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+
+    verifyForDeleteWorker: async ({ verificationCode, workerId }) => {
+      try {
+        set({ loading: true });
+        const response = await axios.post(
+          `${API_END_POINT}/verify-For-Delete`,
+          { verificationCode, workerId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.success) {
+          toast.success(response.data.message);
+          set({ loading: false });
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message || "An error occurred");
+        set({ loading: false });
+      }
+    },
+    
+
+      verifyWorker: async ({ verificationCode, workerId }) => {
+        try {
+          set({ loading: true });
+          const response = await axios.post(
+            `${API_END_POINT}/verify-worker`,
+            { verificationCode, workerId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.data.success) {
+            toast.success(response.data.message);
+            set({ loading: false });
+          }
+        } catch (error) {
+          toast.error(error.response?.data?.message || "An error occurred");
+          set({ loading: false });
+        }
+      },
+
+
+      
+
+
+      searchWorkers: async (searchText, searchQuery, selectedOccupations) => {
         try {
           set({ loading: true });
 
           const params = new URLSearchParams();
           params.set("searchQuery", searchQuery);
-          params.set("selectedCuisines", selectedCuisines.join(","));
+          params.set("selectedOccupations", selectedOccupations.join(","));
 
           const response = await axios.get(
             `${API_END_POINT}/search/${searchText}?${params.toString()}`
@@ -86,30 +167,7 @@ export const useWorkersStore = create(
         }
       },
 
-      addMenuToWorkers: (menu) => {
-        set((state) => ({
-          Workers: state.Workers
-            ? { ...state.Workers, menus: [...state.Workers.menus, menu] }
-            : null,
-        }));
-      },
 
-      updateMenuToWorkers: (updatedMenu) => {
-        set((state) => {
-          if (state.Workers) {
-            const updatedMenuList = state.Workers.menus.map((menu) =>
-              menu._id === updatedMenu._id ? updatedMenu : menu
-            );
-            return {
-              Workers: {
-                ...state.Workers,
-                menus: updatedMenuList,
-              },
-            };
-          }
-          return state;
-        });
-      },
 
       setAppliedFilter: (value) => {
         set((state) => {
@@ -145,11 +203,10 @@ export const useWorkersStore = create(
         }
       },
 
-      updateWorkersOrder: async (orderId, status) => {
+      updateWorkersOrder: async (WorkerId) => {
         try {
           const response = await axios.put(
-            `${API_END_POINT}/order/${orderId}/status`,
-            { status },
+            `${API_END_POINT}/update/${WorkerId}`,
             {
               headers: {
                 "Content-Type": "application/json",

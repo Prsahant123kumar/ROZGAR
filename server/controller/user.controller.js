@@ -6,64 +6,69 @@ const cloudinary = require("../utils/cloudinary");
 const { generateVerificationCode } = require("../utils/generateVerificationCode");
 const  generateToken  = require("../utils/generateToken");
 const { sendPasswordResetEmail, sendResetSuccessEmail, sendVerificationEmail, sendWelcomeEmail } = require("../mailtrap/email");
+const TempUser = require("../models/TempUser");
 
 const signup = async (req, res) => {
     try {
         const { fullname, email, password, contact } = req.body;
-        // Check if user already exists
-        let user = await User.findOne({ email });
-        if (user) {
+
+        // Validate required fields
+        if (!fullname || !email || !password || !contact) {
             return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            });
+        }
+
+        // Check if user already exists in the database
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(409).json({
                 success: false,
                 message: "User already exists with this email"
             });
         }
 
-        // Hash the password
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
+        await TempUser.deleteOne({ email });
+        // Generate OTP & Expiry
+        const verificationToken = generateVerificationCode(); // e.g., 6-digit code
+        const verificationTokenExpiresAt = Date.now() + 10 * 60 * 1000; // 10 min expiry
 
-        // Generate a verification token
-        const verificationToken = generateVerificationCode();
-        // console.log(verificationToken);
-
-        // Create a new user
-        user = await User.create({
+        // Store user details temporarily in Redis
+        await TempUser.create({
             fullname,
             email,
             password: hashedPassword,
-            contact: Number(contact),
+            contact,
             verificationToken,
-            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // Token expires in 24 hours
+            verificationTokenExpiresAt
         });
 
-        // Generate JWT token for the user
+        // Send OTP Email
+        try {
+            await sendVerificationEmail(email, verificationToken);
+            return res.status(200).json({
+                success: true,
+                message: "Verification email sent. Please check your inbox."
+            });
+        } catch (emailError) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send verification email"
+            });
+        }
 
-
-
-        const token = generateToken(res,user);
-
-        // Set the token in an HTTP-only cookie
-        res.cookie('token', token, {
-            httpOnly: true,  // Can't be accessed by JavaScript
-            secure: process.env.NODE_ENV === 'production', // True in production (HTTPS)
-            sameSite: 'None', // For cross-origin requests
-        });
-
-        // Send verification email
-        await sendVerificationEmail(email, verificationToken);
-
-        // Return user without password
-        const userWithoutPassword = await User.findOne({ email }).select("-password");
-        return res.status(201).json({
-            success: true,
-            message: "Account created successfully",
-            user: userWithoutPassword
-        });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal server error" });
+        console.error("Signup Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
     }
 };
+
 
 
 
@@ -105,39 +110,57 @@ const login = async (req, res) => {
     }
 };
 
-
-
-
-
 const verifyEmail = async (req, res) => {
     try {
         const { verificationCode } = req.body;
 
-        const user = await User.findOne({ verificationToken: verificationCode, verificationTokenExpiresAt: { $gt: Date.now() } }).select("-password");
-
-        if (!user) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid or expired verification token"
-            });
+        if (!verificationCode) {
+            return res.status(400).json({ success: false, message: "Verification code is required." });
         }
-        user.isVerified = true;
-        user.verificationToken = undefined;
-        user.verificationTokenExpiresAt = undefined;
-        await user.save();
 
-        await sendWelcomeEmail(user.email, user.fullname);
+        // Find user with valid OTP in TempUser
+        const tempUser = await TempUser.findOne({ 
+            verificationToken: verificationCode,
+            verificationTokenExpiresAt: { $gt: Date.now() } // Ensure OTP is not expired
+        });
+
+        if (!tempUser) {
+            return res.status(400).json({ success: false, message: "Invalid or expired verification token." });
+        }
+
+        // Save user to the main User collection
+        const newUser = await User.create({
+            fullname: tempUser.fullname,
+            email: tempUser.email,
+            password: tempUser.password,
+            contact: tempUser.contact,
+            isVerified: true
+        });
+
+        // Delete the TempUser entry (Cleanup)
+        await TempUser.deleteOne({ email: tempUser.email });
+
+        // Send Welcome Email
+        await sendWelcomeEmail(newUser.email, newUser.fullname);
 
         return res.status(200).json({
             success: true,
             message: "Email verified successfully.",
-            user,
+            user: {
+                _id: newUser._id,
+                fullname: newUser.fullname,
+                email: newUser.email,
+                contact: newUser.contact,
+                isVerified: newUser.isVerified
+            }
         });
+
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal server error" });
+        console.error("Verify Email Error:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
 
 const logout = async (_, res) => {
     try {
@@ -184,7 +207,6 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     try {
-        console.log(req.body);
         const { id: email, password: newPassword } = req.body.take; // Extract email and new password
         const user = await User.findOne({ email }); // Find user by email
         if (!user) {

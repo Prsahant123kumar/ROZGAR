@@ -1,62 +1,92 @@
+
+
 import { useWorkersStore } from "@/store/useWorkersStore";
-import AvailableMenu from "./AvailableMenu";
-import { Badge } from "./ui/badge.jsx";
-import { Timer } from "lucide-react";
-import { PhoneOutgoing } from "lucide-react";
+import { Badge } from "./ui/badge";
+import { PhoneOutgoing, Edit2 } from "lucide-react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import AddReviewForm from "./AddReviewForm";
 import WorkersReviews from "./WorkersReviews";
 
 const WorkersDetail = () => {
   const params = useParams();
-  const { singleWorkers, getSingleWorkers } = useWorkersStore();
+  const navigate = useNavigate();
+  const { singleWorkers, getSingleWorkers, getInformation } = useWorkersStore();
   const user = JSON.parse(localStorage.getItem("user-name"));
-  const state=user.state.user
-  const userId = {id:(state ? state._id : null),name:(state ? state.fullname : null)};
+  const state = user?.state?.user;
+  const userId = { id: state ? state._id : null, name: state ? state.fullname : null };
+
   useEffect(() => {
-    getSingleWorkers(params.id); 
+    getSingleWorkers(params.id);
   }, [params.id]);
 
+  const takeInformation = async (workerId) => {
+    try {
+      const information = await getInformation(workerId);
+      navigate("/admin/UpdateLocalWorkers");
+    } catch (error) {
+      console.error("Error in takeInformation:", error);
+    }
+  };
+
   return (
-    <div className="max-w-6xl mx-auto my-10">
-      <div className="w-full">
-        <div className="relative w-full h-32 md:h-64 lg:h-72">
-          <img
-            src={singleWorkers?.imageUrl || "Loading..."}
-            alt="res_image"
-            className="object-cover w-full h-full rounded-lg shadow-lg"
-          />
-        </div>
-        <div className="flex flex-col md:flex-row justify-between">
-          <div className="my-5">
-            <h1 className="font-medium text-xl">
+    <div className="max-w-7xl mx-auto my-10 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Side: Worker Image and Details */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+          {/* Worker Image in Square */}
+          <div className="relative w-full h-80 rounded-lg overflow-hidden">
+            <img
+              src={singleWorkers?.imageUrl || "https://via.placeholder.com/800x800"}
+              alt="Worker"
+              className="w-full h-full object-cover rounded-lg transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+
+          {/* Worker Details */}
+          <div className="mt-6">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               {singleWorkers?.WorkersName || "Loading..."}
             </h1>
-            <div className="flex gap-2 my-2">
-              {singleWorkers?.cuisines.map((cuisine, idx) => (
-                <Badge key={idx}>{cuisine}</Badge>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {singleWorkers?.Occupations?.map((Occupation, idx) => (
+                <Badge
+                  key={idx}
+                  className="bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100"
+                >
+                  {Occupation}
+                </Badge>
               ))}
             </div>
-            <div className="flex md:flex-row flex-col gap-2 my-5">
-              <div className="flex items-center gap-2">
-                <PhoneOutgoing className="w-5 h-5" />
-                <h1 className="flex items-center gap-2 font-medium">
-                  Contect No.:
-                  <span className="text-[#D19254]">
-                    {singleWorkers?.contactNo || "NA"}
-                  </span>
-                </h1>
-              </div>
+            <div className="mt-6 flex items-center gap-4 text-gray-700 dark:text-gray-300">
+              <PhoneOutgoing className="w-5 h-5" />
+              <span className="font-medium">Contact No.:</span>
+              <span className="text-orange-600 dark:text-orange-400">
+                {singleWorkers?.contactNo || "N/A"}
+              </span>
             </div>
           </div>
+
+          {/* Update Details Button */}
+          <div className="mt-6">
+            <button
+              onClick={() => takeInformation(singleWorkers._id)}
+              className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 transition-colors duration-200"
+            >
+              <Edit2 size={18} /> Update Details
+            </button>
+          </div>
         </div>
-        {singleWorkers?.menus && <AvailableMenu menus={singleWorkers.menus} />}
-        <AddReviewForm WorkersId={params.id} userId={userId.id} fullname={userId.fullname} />
-        <WorkersReviews WorkersId={params.id} />
+
+        {/* Right Side: Add Review Form and Reviews */}
+        <div className="space-y-8">
+          <AddReviewForm WorkersId={params.id} userId={userId.id} fullname={userId.name} />
+          <WorkersReviews WorkersId={params.id} />
+        </div>
       </div>
     </div>
   );
 };
 
 export default WorkersDetail;
+
