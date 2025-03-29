@@ -39,13 +39,14 @@ const Workers = () => {
       if (input.imageFile) {
         formData.append("imageFile", input.imageFile);
       }
-      const workerId = localStorage.getItem("workerId");
+      
+      if (Workers) {
+        const workerId = localStorage.getItem("workerId");
       if (!workerId) {
         console.error("Worker ID not found in localStorage!");
         return;
       }
       formData.append("workerId", workerId);
-      if (Workers) {
         await updateWorkers(formData);
         navigate("/admin/verification-for-update-details", { state: { workerId } });
       } else {
