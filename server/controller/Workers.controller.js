@@ -10,10 +10,10 @@ exports.createWorkers = async (req, res) => {
         const file = req.file;
 
         // Check if Workers already exists for the user
-        const existingWorkers = await Workers.findOne({ user: req.id });
-        if (existingWorkers) {
-            return res.status(400).json({ success: false, message: "Workers already exists for this user" });
-        }
+        // const existingWorkers = await Workers.findOne({ user: req.id });
+        // if (existingWorkers) {
+        //     return res.status(400).json({ success: false, message: "Workers already exists for this user" });
+        // }
 
         // Validate image file
         if (!file) {
