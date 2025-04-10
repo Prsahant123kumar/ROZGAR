@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const generateToken = ( res,user) => {
-    console.log("Inside generateToken - Received user:", user);
-    console.log("Inside generateToken - Type of user:", typeof user);
-    console.log("Inside generateToken - User._id:", user?._id);
+    // console.log("Inside generateToken - Received user:", user);
+    // console.log("Inside generateToken - Type of user:", typeof user);
+    // console.log("Inside generateToken - User._id:", user?._id);
 
     if (!user || !user._id) {
         throw new Error("User object is missing or does not have an _id");

@@ -20,7 +20,7 @@ const Workers = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [errors, setErrors] = useState({});
 
-  const { loading, updateWorkers, createWorkers, getWorkers } = useWorkersStore();
+  const { loading, Workers,updateWorkers, createWorkers, getWorkers } = useWorkersStore();
   const changeEventHandler = (e) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });

@@ -92,7 +92,7 @@ const SearchPage = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {loading ? (
               <SearchPageSkeleton />
-            ) : searchedWorkers?.data?.length === 0 ? (
+            ) : searchedWorkers?.workers?.length === 0 ? (
               <NoResultFound searchText={params.text} />
             ) : (
               searchedWorkers.workers.map((worker) => (

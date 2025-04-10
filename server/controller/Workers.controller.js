@@ -440,7 +440,7 @@ exports.searchWorkers = async (req, res) => {
   
       const finalQuery = andConditions.length > 0 ? { $and: andConditions } : {};
       const workersList = await Workers.find(finalQuery);
-      console.log(finalQuery,workersList,selectedOccupations)
+    //   console.log(finalQuery,workersList,selectedOccupations)
       
       return res.status(200).json({ success: true, workers: workersList });
     } catch (error) {

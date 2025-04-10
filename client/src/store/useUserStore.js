@@ -87,24 +87,35 @@ export const useUserStore = create(
         }
       },
       checkAuthentication: async () => {
-        try {
-            set({ isCheckingAuth: true });
-    
-            const response = await axios.get(`${API_END_POINT}/check-auth`, {
-                withCredentials: true,  // Ensures cookies are sent along with the request
-            });
-    
-            if (response.data.success) {
-                set({
-                    user: response.data.user,
-                    isAuthenticated: true,
-                    isCheckingAuth: false,
-                });
-            }
-        } catch (error) {
-            set({ isAuthenticated: false, isCheckingAuth: false });
+        const state = useUserStore.getState();
+      
+        // ✅ Skip API call if user is already stored from localStorage
+        if (state.user && state.isAuthenticated) {
+          set({ isCheckingAuth: false });
+          return;
         }
-    },    
+      
+        try {
+          set({ isCheckingAuth: true });
+      
+          const response = await axios.get(`${API_END_POINT}/check-auth`, {
+            withCredentials: true,
+          });
+      
+          if (response.data.success) {
+            set({
+              user: response.data.user,
+              isAuthenticated: true,
+              isCheckingAuth: false,
+            });
+          } else {
+            set({ isAuthenticated: false, isCheckingAuth: false });
+          }
+        } catch (error) {
+          set({ isAuthenticated: false, isCheckingAuth: false });
+        }
+      },
+          
       logout: async () => {
         try {
           set({ loading: true });

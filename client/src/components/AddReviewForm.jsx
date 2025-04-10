@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
 
 const AddReviewForm = ({ WorkersId, userId, fullname }) => {
-  const API_END_POINT = "https://rozgar-rpk0.onrender.com/api/v1/Workers";
+  const API_END_POINT = "http://localhost:3000/api/v1/Workers";
   axios.defaults.withCredentials = true;
 
   const [input, setInput] = useState({

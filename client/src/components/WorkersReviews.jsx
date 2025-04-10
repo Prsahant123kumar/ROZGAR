@@ -4,7 +4,7 @@ import { Separator } from "./ui/separator";
 
 const WorkersReviews = ({ WorkersId }) => {
   const [reviews, setReviews] = useState([]);
-  const API_END_POINT = "https://rozgar-rpk0.onrender.com/api/v1/Workers";
+  const API_END_POINT = "http://localhost:3000/api/v1/Workers";
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
