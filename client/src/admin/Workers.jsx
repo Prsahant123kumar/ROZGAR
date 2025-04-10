@@ -20,8 +20,7 @@ const Workers = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [errors, setErrors] = useState({});
 
-  const { loading, Workers, updateWorkers, createWorkers, getWorkers } = useWorkersStore();
-
+  const { loading, updateWorkers, createWorkers, getWorkers } = useWorkersStore();
   const changeEventHandler = (e) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
@@ -59,7 +58,7 @@ const Workers = () => {
 
   useEffect(() => {
     const fetchWorkers = async () => {
-      await getWorkers();
+      const Workers=await getWorkers();
       setLoadingData(false);
       if (Workers) {
         setInput({

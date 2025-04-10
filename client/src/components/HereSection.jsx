@@ -3,11 +3,17 @@ import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-
+import { useWorkersStore } from "@/store/useWorkersStore";
 const HereSection = () => {
+  const {searchWorkers}=useWorkersStore();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
-
+  const TakeInformation= async (searchText)=>{
+    console.log(searchText)
+    const searchedWorkers=await searchWorkers(searchText);
+    console.log(searchedWorkers)
+    navigate(`/search/${searchText}`, { state: { searchedWorkers } });
+  }
   return (
     <section className="relative text-center py-[123px] bg-gradient-to-r from-orange-500 to-red-500 text-gray-900 dark:text-white">
       {/* Background image with low opacity */}
@@ -33,7 +39,7 @@ const HereSection = () => {
             onChange={(e) => setSearchText(e.target.value)}
           />
           <Button
-            onClick={() => navigate(`/search/${searchText}`)}
+            onClick={() => TakeInformation(searchText)}
             className="bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black"
           >
             Search

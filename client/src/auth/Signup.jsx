@@ -38,7 +38,7 @@ const Signup = () => {
       await signup(input);  // ✅ If signup fails, it will throw an error
       navigate("/verify-email");  // ✅ Will not execute if error is thrown
     } catch (error) {
-      console.log("Signup2 failed, staying on signup page");
+      // console.log("Signup2 failed, staying on signup page");
     }
   };  
 

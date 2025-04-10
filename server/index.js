@@ -101,24 +101,24 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Serve static files from "public"
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
 // Serve static frontend files from "client/dist"
-app.use(express.static(path.join(DIRNAME, "client", "dist")));
+// app.use(express.static(path.join(DIRNAME, "client", "dist")));
 
 // API Routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/Workers", WorkersRoute);
 
 // ✅ Fixed: Root Route Now Returns JSON Instead of Rendering a View
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the API!" });
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome to the API!" });
+// });
 
 // Handle React/Vue Frontend Routing
-app.use("*", (_, res) => {
-  res.sendFile(path.resolve(DIRNAME, "client", "dist", "index.html"));
-});
+// app.use("*", (_, res) => {
+//   res.sendFile(path.resolve(DIRNAME, "client", "dist", "index.html"));
+// });
 
 // Start the Server
 const PORT = process.env.PORT || 3000;

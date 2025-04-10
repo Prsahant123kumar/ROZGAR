@@ -259,7 +259,10 @@ const updateProfile = async (req, res) => {
         const userId = req.id;
         const { fullname, email, address, city, country, profilePicture } = req.body;
         let cloudResponse;
-        cloudResponse = await cloudinary.uploader.upload(profilePicture);
+        if (profilePicture) {
+            cloudResponse = await cloudinary.uploader.upload(profilePicture);
+        } 
+        console.log(req.id,req._id,req.body);
         const updatedData = {fullname, email, address, city, country, profilePicture};
 
         const user = await User.findByIdAndUpdate(userId, updatedData, { new: true }).select("-password");

@@ -39,7 +39,7 @@ const CheckWorker = () => {
       await verifyWorker({ verificationCode, workerId: workerId || storedWorkerId });
       navigate("/");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

@@ -353,39 +353,101 @@ exports.getReviews = async (req, res) => {
 };
 
 // Search Workers
+// exports.searchWorkers = async (req, res) => {
+//     try {
+//         const searchText = req.params.searchText || "";
+//         const searchQuery = req.query.searchQuery || "";
+//         const selectedOccupations = (req.query.selectedOccupations || "").split(",").filter((Occupation) => Occupation);
+//         const query = {};
+
+//         if (searchText) {
+//             query.$or = [
+//                 { WorkersName: { $regex: searchText, $options: "i" } },
+//                 { city: { $regex: searchText, $options: "i" } },
+//                 { country: { $regex: searchText, $options: "i" } },
+//             ];
+//         }
+
+//         if (searchQuery) {
+//             query.$or = [
+//                 { WorkersName: { $regex: searchQuery, $options: "i" } },
+//                 { Occupations: { $regex: searchQuery, $options: "i" } },
+//             ];
+//         }
+
+//         if (selectedOccupations.length > 0) {
+//             query.Occupations = { $in: selectedOccupations };
+//         }
+// if (selectedOccupations.length > 0) {
+//     andConditions.push({
+//       $or: selectedOccupations.map((occupation) => ({
+//         Occupations: { $regex: `^${occupation.trim()}$`, $options: "i" }
+//       })),
+//     });
+//   }
+
+//         const workersList = await Workers.find(query);
+//         console.log(workersList,searchText,searchQuery,selectedOccupations)
+//         return res.status(200).json({ success: true, data: workersList });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ message: "Internal server error" });
+//     }
+// };
+
+
 exports.searchWorkers = async (req, res) => {
     try {
-        const searchText = req.params.searchText || "";
-        const searchQuery = req.query.searchQuery || "";
-        const selectedOccupations = (req.query.selectedOccupations || "").split(",").filter((Occupation) => Occupation);
-        const query = {};
-
-        if (searchText) {
-            query.$or = [
-                { WorkersName: { $regex: searchText, $options: "i" } },
-                { city: { $regex: searchText, $options: "i" } },
-                { country: { $regex: searchText, $options: "i" } },
-            ];
-        }
-
-        if (searchQuery) {
-            query.$or = [
-                { WorkersName: { $regex: searchQuery, $options: "i" } },
-                { Occupations: { $regex: searchQuery, $options: "i" } },
-            ];
-        }
-
-        if (selectedOccupations.length > 0) {
-            query.Occupations = { $in: selectedOccupations };
-        }
-
-        const workersList = await Workers.find(query);
-        return res.status(200).json({ success: true, data: workersList });
+      const searchText = req.params.searchText || "";
+      const searchQuery = req.query.searchQuery || "";
+      const selectedOccupations = (req.query.selectedOccupations || "")
+        .split(",")
+        .filter((occupation) => occupation);
+  
+      const andConditions = [];
+  
+      if (searchText) {
+        andConditions.push({
+          $or: [
+            { WorkersName: { $regex: searchText, $options: "i" } },
+            { city: { $regex: searchText, $options: "i" } },
+            { country: { $regex: searchText, $options: "i" } },
+          ],
+        });
+      }
+  
+      if (searchQuery) {
+        andConditions.push({
+          $or: [
+            { WorkersName: { $regex: searchQuery, $options: "i" } },
+            { Occupations: { $regex: searchQuery, $options: "i" } },
+          ],
+        });
+      }
+  
+      if (selectedOccupations.length > 0) {
+        andConditions.push({
+          $or: selectedOccupations.map((occupation) => ({
+            Occupations: {
+              $elemMatch: {
+                $regex: `^${occupation.trim()}\\s*$`,
+                $options: "i",
+              },
+            },
+          })),
+        });
+      }
+  
+      const finalQuery = andConditions.length > 0 ? { $and: andConditions } : {};
+      const workersList = await Workers.find(finalQuery);
+      console.log(finalQuery,workersList,selectedOccupations)
+      
+      return res.status(200).json({ success: true, workers: workersList });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal server error" });
+      console.error("Search Error:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
-};
+  };
 
 // Get Single Workers
 exports.getSingleWorkers = async (req, res) => {

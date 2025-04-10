@@ -10,17 +10,27 @@ import { AspectRatio } from "./ui/aspect-ratio";
 import { Skeleton } from "./ui/skeleton";
 import { useWorkersStore } from "@/store/useWorkersStore";
 import StarRating from "./StarRating";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const SearchPage = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const { loading, searchedWorkers, searchWorkers, setAppliedFilter, appliedFilter, DeleteWorker } = useWorkersStore();
-
+  const { loading,  searchWorkers, searchedWorkers,setAppliedFilter, appliedFilter, DeleteWorker } = useWorkersStore();
   useEffect(() => {
     searchWorkers(params.text, searchQuery, appliedFilter);
+    console.log()
   }, [params.text, searchQuery, appliedFilter]);
-
+  
+  // const handleSearch = () => {
+    //   console.log("Searching with:", {
+      //     searchText: params.text,
+      //     searchQuery,
+      //     appliedFilter,
+      //   });
+  //   searchWorkers(params.text, searchQuery, appliedFilter);
+  // };
+  
+  
   const deleteCall = async (workerId) => {
     try {
       await DeleteWorker(workerId);
@@ -29,7 +39,7 @@ const SearchPage = () => {
       console.error("Error in deleteCall:", error);
     }
   };
-
+  
   return (
     <div className="max-w-7xl mx-auto my-10 px-4">
       <div className="flex flex-col md:flex-row gap-10">
@@ -47,9 +57,12 @@ const SearchPage = () => {
             <Button
               onClick={() => searchWorkers(params.text, searchQuery, appliedFilter)}
               className="bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md hover:from-orange-600 hover:to-orange-700"
-            >
+              >
               Search
             </Button>
+            {/* <Button onClick={handleSearch}>
+              Search
+              </Button> */}
           </div>
           {/* Applied Filters */}
           <div className="flex flex-col md:flex-row md:items-center md:gap-4 mb-4">
@@ -70,9 +83,9 @@ const SearchPage = () => {
                     onClick={() => setAppliedFilter(selectedFilter)}
                     size={16}
                     className="absolute text-orange-600 right-1 top-1 hover:cursor-pointer"
-                  />
-                </div>
-              ))}
+                    />
+                </div> 
+               ))}
             </div>
           </div>
           {/* Workers Cards */}
@@ -82,7 +95,7 @@ const SearchPage = () => {
             ) : searchedWorkers?.data?.length === 0 ? (
               <NoResultFound searchText={params.text} />
             ) : (
-              searchedWorkers.data.map((worker) => (
+              searchedWorkers.workers.map((worker) => (
                 <Card
                   key={worker._id}
                   className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
@@ -202,3 +215,126 @@ const NoResultFound = ({ searchText }) => {
     </div>
   );
 };
+
+
+
+
+// import { Link, useParams } from "react-router-dom";
+// import FilterPage from "./FilterPage";
+// import { Input } from "./ui/input.jsx";
+// import { useEffect, useState } from "react";
+// import { Button } from "./ui/button.jsx";
+// import { Badge } from "./ui/badge.jsx";
+// import { Globe, MapPin, X } from "lucide-react";
+// import { Card, CardContent, CardFooter } from "./ui/card";
+// import { AspectRatio } from "./ui/aspect-ratio";
+// import { Skeleton } from "./ui/skeleton";
+// import { useWorkersStore } from "@/store/useWorkersStore";
+// import StarRating from "./StarRating";
+
+// const SearchPage = () => {
+//   const params = useParams();
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const {
+//     loading,
+//     searchedWorkers = { data: [] }, // Ensure it's always an object with a data array
+//     searchWorkers,
+//     setAppliedFilter,
+//     appliedFilter,
+//   } = useWorkersStore();
+
+//   useEffect(() => {
+//     searchWorkers(params.text, searchQuery, appliedFilter);
+//   }, [params.text, appliedFilter]);
+
+//   return (
+//     <div className="max-w-7xl mx-auto my-10">
+//       <div className="flex flex-col md:flex-row justify-between gap-10">
+//         <FilterPage />
+//         <div className="flex-1">
+//           <div className="flex items-center gap-2">
+//             <Input
+//               type="text"
+//               value={searchQuery}
+//               placeholder="Search by Worker's Name or His passion"
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//             />
+//             <Button
+//               onClick={() => searchWorkers(params.text, searchQuery, appliedFilter)}
+//               className="bg-orange hover:bg-hoverOrange"
+//             >
+//               Search
+//             </Button>
+//           </div>
+
+//           <div>
+//             <h1 className="font-medium text-lg">
+//               ({searchedWorkers?.data?.length || 0}) Search result found
+//             </h1>
+//             <div className="grid md:grid-cols-3 gap-4">
+//               {loading ? (
+//                 <SearchPageSkeleton />
+//               ) : searchedWorkers?.data?.length === 0 ? (
+//                 <NoResultFound searchText={params.text} />
+//               ) : (
+//                 searchedWorkers.data.map((worker) => (
+//                   <Card key={worker._id} className="shadow-xl rounded-xl overflow-hidden">
+//                     <div className="relative">
+//                       <AspectRatio ratio={16 / 6}>
+//                         <img src={worker.imageUrl} alt="Worker" className="w-full h-full object-cover" />
+//                       </AspectRatio>
+//                     </div>
+//                     <CardContent className="p-4">
+//                       <h1 className="text-2xl font-bold">{worker.WorkersName}</h1>
+//                       <div className="flex gap-1 text-gray-600">
+//                         <MapPin size={16} />
+//                         <p>City: <span className="font-medium">{worker.city}</span></p>
+//                       </div>
+//                       <div className="flex gap-1 text-gray-600">
+//                         <Globe size={16} />
+//                         <p>Country: <span className="font-medium">{worker.country}</span></p>
+//                       </div>
+//                     </CardContent>
+//                     <CardFooter className="flex justify-end">
+//                       <StarRating rating={worker.rating || 0} />
+//                       <Link to={`/Workers/${worker._id}`}>
+//                         <Button className="bg-orange hover:bg-hoverOrange">View Details</Button>
+//                       </Link>
+//                     </CardFooter>
+//                   </Card>
+//                 ))
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;
+
+// const SearchPageSkeleton = () => (
+//   <>
+//     {[...Array(3)].map((_, index) => (
+//       <Card key={index} className="shadow-xl rounded-xl overflow-hidden">
+//         <AspectRatio ratio={16 / 6}>
+//           <Skeleton className="w-full h-full" />
+//         </AspectRatio>
+//         <CardContent className="p-4">
+//           <Skeleton className="h-8 w-3/4 mb-2" />
+//         </CardContent>
+//       </Card>
+//     ))}
+//   </>
+// );
+
+// const NoResultFound = ({ searchText }) => (
+//   <div className="text-center">
+//     <h1 className="text-2xl font-semibold">No results found</h1>
+//     <p>We couldn't find any results for "{searchText}".</p>
+//     <Link to="/">
+//       <Button className="mt-4 bg-orange hover:bg-orangeHover">Go Back to Home</Button>
+//     </Link>
+//   </div>
+// );
