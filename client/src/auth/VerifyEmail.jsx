@@ -33,7 +33,7 @@ const VerifyEmail = () => {
     const verificationCode = otp.join("");
     try {
       await verifyEmail(verificationCode);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       // console.log(error);
     }
