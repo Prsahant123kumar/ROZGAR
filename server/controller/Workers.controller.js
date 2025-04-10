@@ -8,6 +8,7 @@ exports.createWorkers = async (req, res) => {
     try {
         const { WorkersName, city, country, contactNo, Occupations } = req.body;
         const file = req.file;
+        console.log(WorkersName,req.id)
 
         // Check if Workers already exists for the user
         // const existingWorkers = await Workers.findOne({ user: req.id });

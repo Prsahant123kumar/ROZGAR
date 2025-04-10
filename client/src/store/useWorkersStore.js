@@ -27,6 +27,7 @@ export const useWorkersStore = create(
           });
           if (response.data.success) {
             toast.success(response.data.message);
+            console.log(response.data,"create")
             set({ loading: false });
           }
         } catch (error) {

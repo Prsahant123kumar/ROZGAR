@@ -16,6 +16,7 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const { loading,  searchWorkers, searchedWorkers,setAppliedFilter, appliedFilter, DeleteWorker } = useWorkersStore();
+  
   useEffect(() => {
     searchWorkers(params.text, searchQuery, appliedFilter);
     console.log()
@@ -67,8 +68,8 @@ const SearchPage = () => {
           {/* Applied Filters */}
           <div className="flex flex-col md:flex-row md:items-center md:gap-4 mb-4">
             <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-              ({searchedWorkers?.data?.length || 0}) Search result
-              {searchedWorkers?.data?.length === 1 ? "" : "s"} found
+              ({searchedWorkers?.workers?.length || 0}) Search result
+              {searchedWorkers?.workers?.length === 1 ? "" : "s"} found
             </h1>
             <div className="flex flex-wrap gap-2">
               {appliedFilter.map((selectedFilter, idx) => (

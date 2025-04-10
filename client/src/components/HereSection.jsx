@@ -10,7 +10,7 @@ const HereSection = () => {
   const navigate = useNavigate();
   const TakeInformation= async (searchText)=>{
     console.log(searchText)
-    const searchedWorkers=await searchWorkers(searchText);
+    const searchedWorkers= await searchWorkers(searchText);
     console.log(searchedWorkers)
     navigate(`/search/${searchText}`, { state: { searchedWorkers } });
   }

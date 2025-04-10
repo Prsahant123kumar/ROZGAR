@@ -110,6 +110,8 @@ const login = async (req, res) => {
     }
 };
 
+const jwt = require("jsonwebtoken");
+
 const verifyEmail = async (req, res) => {
     try {
         const { verificationCode } = req.body;
@@ -121,28 +123,42 @@ const verifyEmail = async (req, res) => {
         // Find user with valid OTP in TempUser
         const tempUser = await TempUser.findOne({ 
             verificationToken: verificationCode,
-            verificationTokenExpiresAt: { $gt: Date.now() } // Ensure OTP is not expired
+            verificationTokenExpiresAt: { $gt: Date.now() } // Not expired
         });
 
         if (!tempUser) {
             return res.status(400).json({ success: false, message: "Invalid or expired verification token." });
         }
 
-        // Save user to the main User collection
+        // Save verified user to the main User collection
         const newUser = await User.create({
             fullname: tempUser.fullname,
             email: tempUser.email,
-            password: tempUser.password,
+            password: tempUser.password, // Already hashed
             contact: tempUser.contact,
             isVerified: true
         });
 
-        // Delete the TempUser entry (Cleanup)
+        // Delete the TempUser entry
         await TempUser.deleteOne({ email: tempUser.email });
 
-        // Send Welcome Email
+        // Send welcome email
         await sendWelcomeEmail(newUser.email, newUser.fullname);
 
+        // ✅ Generate JWT token
+        const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
+            expiresIn: "7d",
+        });
+
+        // ✅ Set token as HTTP-only cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // true in prod (https)
+            sameSite: "Lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        // ✅ Return user & token in response
         return res.status(200).json({
             success: true,
             message: "Email verified successfully.",
@@ -152,7 +168,8 @@ const verifyEmail = async (req, res) => {
                 email: newUser.email,
                 contact: newUser.contact,
                 isVerified: newUser.isVerified
-            }
+            },
+            token // Optional: only if frontend uses it
         });
 
     } catch (error) {
@@ -160,6 +177,7 @@ const verifyEmail = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
 
 
 const logout = async (_, res) => {
@@ -256,7 +274,9 @@ const checkAuth = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
+
         const userId = req.id;
+        console.log(userId)
         const { fullname, email, address, city, country, profilePicture } = req.body;
         let cloudResponse;
         if (profilePicture) {
