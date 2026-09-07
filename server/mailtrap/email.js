@@ -7,12 +7,16 @@ dotenv.config();
 
 let transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: false, // true for 465, false for other ports
+  port: 465, // Explicitly force port 465
+  secure: true, // Must be true when using port 465
   auth: {
     user: process.env.SMTP_MAIL,
     pass: process.env.SMTP_PASSWORD,
   },
+  // Add timeouts (in milliseconds) to prevent infinite loading
+  connectionTimeout: 10000, 
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
 });
 
 
