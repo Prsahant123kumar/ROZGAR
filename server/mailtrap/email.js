@@ -2,34 +2,17 @@ const { generatePasswordResetEmailHtml, generateResetSuccessEmailHtml, generateW
 const { client, sender } = require("./mailtrap");
 const expressAsyncHandler = require("express-async-handler");
 const dotenv = require("dotenv");
-const nodemailer = require("nodemailer");
 dotenv.config();
 
-let transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: 465, // Explicitly force port 465
-  secure: true, // Must be true when using port 465
-  auth: {
-    user: process.env.SMTP_MAIL,
-    pass: process.env.SMTP_PASSWORD,
-  },
-  // Add timeouts (in milliseconds) to prevent infinite loading
-  connectionTimeout: 10000, 
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-});
-
-
+// Send Verification Email
 const sendVerificationEmail = expressAsyncHandler(async (email, verificationToken) => {
-  var mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: 'Verify your email',
-    html: htmlContent.replace("{verificationToken}", verificationToken)
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: 'Verify your email',
+      html: htmlContent.replace("{verificationToken}", verificationToken)
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending email:", error);
@@ -37,26 +20,16 @@ const sendVerificationEmail = expressAsyncHandler(async (email, verificationToke
   }
 });
 
-
-
-
-
-
+// Send Welcome Email
 const sendWelcomeEmail = expressAsyncHandler(async (email, name) => {
-  const htmlContent = generateWelcomeEmailHtml(name);
-  var mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: 'Welcome to PatelEats',
-    html: htmlContent,
-    template_variables: {
-      company_info_name: "PatelEats",
-      name: name
-    }
-  };
-
+  const html = generateWelcomeEmailHtml(name);
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: 'Welcome to PatelEats',
+      html: html,
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending email:", error);
@@ -64,47 +37,40 @@ const sendWelcomeEmail = expressAsyncHandler(async (email, name) => {
   }
 });
 
-
+// Send Password Reset Email
 const sendPasswordResetEmail = expressAsyncHandler(async (email, resetURL) => {
-  const htmlContent = generatePasswordResetEmailHtml(resetURL);
-  var mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: 'Reset your password',
-    html: htmlContent
-  };
-
+  const html = generatePasswordResetEmailHtml(resetURL);
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: 'Reset your password',
+      html: html
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending email:", error);
-    throw new Error("Failed to reset password   "+error.message);
+    throw new Error("Failed to reset password: " + error.message);
   }
 });
 
-
-
+// Send Reset Success Email
 const sendResetSuccessEmail = expressAsyncHandler(async (email) => {
-  const htmlContent = generateResetSuccessEmailHtml();
-  var mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: 'Password Reset Successfully',
-    html: htmlContent,
-    category: "Password Reset"
-  };
-
+  const html = generateResetSuccessEmailHtml();
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: 'Password Reset Successfully',
+      html: html,
+      category: "Password Reset"
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending email:", error);
-    throw new Error("Failed to send password reset success email   "+error.message);
+    throw new Error("Failed to send password reset success email: " + error.message);
   }
 });
-
-
 
 module.exports = {
   sendVerificationEmail,
