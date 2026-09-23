@@ -1,37 +1,32 @@
-const { 
-  generatePasswordResetEmailHtml, 
-  generateResetSuccessEmailHtml, 
-  generateWelcomeEmailHtml, 
-  htmlContent 
-} = require("./htmlEmail");
+const { MailtrapClient } = require("mailtrap");
 const expressAsyncHandler = require("express-async-handler");
-const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const {
+  generatePasswordResetEmailHtml,
+  generateResetSuccessEmailHtml,
+  generateWelcomeEmailHtml,
+  htmlContent,
+} = require("./htmlEmail");
+
 dotenv.config();
 
-let transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: Number(process.env.SMTP_PORT) === 465,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
+const client = new MailtrapClient({
+  token: process.env.SMTP_PASSWORD, // your Mailtrap API token
 });
 
-const sendVerificationEmail = expressAsyncHandler(async (email, verificationToken) => {
-  const mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: "Verify your email",
-    html: htmlContent.replace("{verificationToken}", verificationToken),
-  };
+const sender = {
+  email: process.env.SMTP_MAIL, // e.g. hello@demomailtrap.co
+  name: "PatelEats",
+};
 
+const sendVerificationEmail = expressAsyncHandler(async (email, verificationToken) => {
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: "Verify your email",
+      html: htmlContent.replace("{verificationToken}", verificationToken),
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending verification email:", error);
@@ -40,16 +35,13 @@ const sendVerificationEmail = expressAsyncHandler(async (email, verificationToke
 });
 
 const sendWelcomeEmail = expressAsyncHandler(async (email, name) => {
-  const html = generateWelcomeEmailHtml(name);
-  const mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: "Welcome to PatelEats",
-    html: html,
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: "Welcome to PatelEats",
+      html: generateWelcomeEmailHtml(name),
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending welcome email:", error);
@@ -58,16 +50,13 @@ const sendWelcomeEmail = expressAsyncHandler(async (email, name) => {
 });
 
 const sendPasswordResetEmail = expressAsyncHandler(async (email, resetURL) => {
-  const html = generatePasswordResetEmailHtml(resetURL);
-  const mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: "Reset your password",
-    html: html,
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: "Reset your password",
+      html: generatePasswordResetEmailHtml(resetURL),
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending reset password email:", error);
@@ -76,16 +65,13 @@ const sendPasswordResetEmail = expressAsyncHandler(async (email, resetURL) => {
 });
 
 const sendResetSuccessEmail = expressAsyncHandler(async (email) => {
-  const html = generateResetSuccessEmailHtml();
-  const mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: "Password Reset Successfully",
-    html: html,
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await client.send({
+      from: sender,
+      to: [{ email }],
+      subject: "Password Reset Successfully",
+      html: generateResetSuccessEmailHtml(),
+    });
     return { message: "Email sent successfully!" };
   } catch (error) {
     console.error("Error sending reset success email:", error);
