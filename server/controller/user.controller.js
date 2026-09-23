@@ -2,10 +2,16 @@ const { User } = require("../models/user.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const cloudinary = require("../utils/cloudinary");
 const { generateVerificationCode } = require("../utils/generateVerificationCode");
-const  generateToken  = require("../utils/generateToken");
-const { sendPasswordResetEmail, sendResetSuccessEmail, sendVerificationEmail, sendWelcomeEmail } = require("../mailtrap/email");
+const generateToken = require("../utils/generateToken");
+const { 
+    sendPasswordResetEmail, 
+    sendResetSuccessEmail, 
+    sendVerificationEmail, 
+    sendWelcomeEmail 
+} = require("../mailtrap/email");
 const TempUser = require("../models/TempUser");
 
 const signup = async (req, res) => {
@@ -32,11 +38,12 @@ const signup = async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         await TempUser.deleteOne({ email });
+        
         // Generate OTP & Expiry
         const verificationToken = generateVerificationCode(); // e.g., 6-digit code
         const verificationTokenExpiresAt = Date.now() + 10 * 60 * 1000; // 10 min expiry
 
-        // Store user details temporarily in Redis
+        // Store user details temporarily
         await TempUser.create({
             fullname,
             email,
@@ -68,9 +75,6 @@ const signup = async (req, res) => {
         });
     }
 };
-
-
-
 
 const login = async (req, res) => {
     try {
@@ -110,8 +114,6 @@ const login = async (req, res) => {
     }
 };
 
-const jwt = require("jsonwebtoken");
-
 const verifyEmail = async (req, res) => {
     try {
         const { verificationCode } = req.body;
@@ -142,23 +144,26 @@ const verifyEmail = async (req, res) => {
         // Delete the TempUser entry
         await TempUser.deleteOne({ email: tempUser.email });
 
-        // Send welcome email
-        await sendWelcomeEmail(newUser.email, newUser.fullname);
+        // Send welcome email asynchronously without blocking execution
+        sendWelcomeEmail(newUser.email, newUser.fullname).catch((err) =>
+            console.error("Non-blocking welcome email error:", err)
+        );
 
-        // ✅ Generate JWT token
-        const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
+        // Generate JWT token
+        const secret = process.env.SECRET_KEY || "default_fallback_secret";
+        const token = jwt.sign({ userId: newUser._id }, secret, {
             expiresIn: "7d",
         });
 
-        // ✅ Set token as HTTP-only cookie
+        // Set token as HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // true in prod (https)
-            sameSite: "Lax",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        // ✅ Return user & token in response
+        // Return user & token in response
         return res.status(200).json({
             success: true,
             message: "Email verified successfully.",
@@ -169,7 +174,7 @@ const verifyEmail = async (req, res) => {
                 contact: newUser.contact,
                 isVerified: newUser.isVerified
             },
-            token // Optional: only if frontend uses it
+            token
         });
 
     } catch (error) {
@@ -177,8 +182,6 @@ const verifyEmail = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
-
-
 
 const logout = async (_, res) => {
     try {
@@ -236,7 +239,7 @@ const resetPassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         // Update the user's password
-        user.password = hashedPassword; // Assuming the password is hashed elsewhere
+        user.password = hashedPassword;
         await user.save();
 
         return res.status(200).json({
@@ -261,7 +264,7 @@ const checkAuth = async (req, res) => {
                 success: false,
                 message: 'User not found'
             });
-        };
+        }
         return res.status(200).json({
             success: true,
             user
@@ -274,16 +277,23 @@ const checkAuth = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-
         const userId = req.id;
-        console.log(userId)
         const { fullname, email, address, city, country, profilePicture } = req.body;
-        let cloudResponse;
-        if (profilePicture) {
-            cloudResponse = await cloudinary.uploader.upload(profilePicture);
+        let uploadedPicUrl = profilePicture;
+        
+        if (profilePicture && profilePicture.startsWith("data:")) {
+            const cloudResponse = await cloudinary.uploader.upload(profilePicture);
+            uploadedPicUrl = cloudResponse.secure_url;
         } 
-        // console.log(req.id,req._id,req.body);
-        const updatedData = {fullname, email, address, city, country, profilePicture};
+        
+        const updatedData = { 
+            fullname, 
+            email, 
+            address, 
+            city, 
+            country, 
+            profilePicture: uploadedPicUrl 
+        };
 
         const user = await User.findByIdAndUpdate(userId, updatedData, { new: true }).select("-password");
 
@@ -298,4 +308,13 @@ const updateProfile = async (req, res) => {
     }
 };
 
-module.exports = { signup, login, verifyEmail, logout, forgotPassword, resetPassword, checkAuth, updateProfile };
+module.exports = { 
+    signup, 
+    login, 
+    verifyEmail, 
+    logout, 
+    forgotPassword, 
+    resetPassword, 
+    checkAuth, 
+    updateProfile 
+};
